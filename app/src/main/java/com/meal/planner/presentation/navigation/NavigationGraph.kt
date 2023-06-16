@@ -27,7 +27,9 @@ fun NavigationGraph() {
         }
 
         composable(route = NavigationRoute.DietType.route) {
-            DietTypeScreen()
+            DietTypeScreen(
+                navigate = { navController.navigate(NavigationRoute.Home.route) }
+            )
         }
 
         composable(route = NavigationRoute.Home.route) {
