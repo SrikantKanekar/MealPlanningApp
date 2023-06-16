@@ -21,7 +21,9 @@ fun NavigationGraph() {
         startDestination = NavigationRoute.EnterWeight.route
     ) {
         composable(route = NavigationRoute.EnterWeight.route) {
-            EnterWeightScreen()
+            EnterWeightScreen(
+                navigate = { navController.navigate(NavigationRoute.DietType.route) }
+            )
         }
 
         composable(route = NavigationRoute.DietType.route) {
