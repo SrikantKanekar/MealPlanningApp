@@ -53,7 +53,6 @@ fun MealPlannerTheme(
 
     MaterialTheme(
         colorScheme = colorScheme,
-        typography = Typography,
         content = content
     )
 }

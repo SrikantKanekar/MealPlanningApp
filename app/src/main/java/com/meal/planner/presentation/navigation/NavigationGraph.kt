@@ -18,7 +18,7 @@ fun NavigationGraph() {
 
     NavHost(
         navController = navController,
-        startDestination = NavigationRoute.EnterWeight.route
+        startDestination = NavigationRoute.Home.route
     ) {
         composable(route = NavigationRoute.EnterWeight.route) {
             EnterWeightScreen(
@@ -33,11 +33,17 @@ fun NavigationGraph() {
         }
 
         composable(route = NavigationRoute.Home.route) {
-            HomeScreen()
+            HomeScreen(
+                navigateToDiet = { navController.navigate(NavigationRoute.Diet.route) },
+                navigateToSettings = { navController.navigate(NavigationRoute.Settings.route) }
+            )
         }
 
         composable(route = NavigationRoute.Diet.route) {
-            DietScreen()
+            DietScreen(
+                navigateBack = { navController.popBackStack() },
+                navigateToMeal = { navController.navigate(NavigationRoute.Meal.route) }
+            )
         }
 
         composable(route = NavigationRoute.Meal.route) {
