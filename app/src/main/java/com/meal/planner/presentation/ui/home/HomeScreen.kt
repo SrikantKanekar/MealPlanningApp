@@ -1,6 +1,7 @@
 package com.meal.planner.presentation.ui.home
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -22,8 +23,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.meal.planner.model.Diet
 import java.time.DayOfWeek
 
@@ -61,7 +64,7 @@ fun HomeScreen(
             )
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = { /*TODO*/ }) {
+            FloatingActionButton(onClick = { }) {
                 Icon(
                     imageVector = Icons.Filled.Add,
                     contentDescription = "Add diet"
@@ -90,12 +93,15 @@ fun HomeScreen(
                         modifier = Modifier.padding(16.dp)
                     ) {
                         Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(bottom = 16.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text(
                                 text = diet.name,
-                                style = MaterialTheme.typography.headlineLarge
+                                style = MaterialTheme.typography.titleLarge
                             )
                             Text(
                                 text = "1983 cal",
@@ -103,7 +109,9 @@ fun HomeScreen(
                             )
                         }
                         Row(
-                            modifier = Modifier.fillMaxWidth(),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .horizontalScroll(rememberScrollState()),
                             horizontalArrangement = Arrangement.End
                         ) {
                             diet.daysOfWeek.map { day ->
@@ -113,7 +121,8 @@ fun HomeScreen(
                                     label = {
                                         Text(
                                             text = day.name,
-                                            style = MaterialTheme.typography.labelSmall
+                                            style = MaterialTheme.typography.labelSmall,
+                                            fontSize = 10.sp
                                         )
                                     }
                                 )

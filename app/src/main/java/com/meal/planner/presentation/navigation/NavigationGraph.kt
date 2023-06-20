@@ -47,7 +47,10 @@ fun NavigationGraph() {
         }
 
         composable(route = NavigationRoute.Meal.route) {
-            MealScreen()
+            MealScreen(
+                navigateBack = { navController.popBackStack() },
+                navigateToFood = { navController.navigate(NavigationRoute.Food.route) }
+            )
         }
 
         composable(route = NavigationRoute.Food.route) {

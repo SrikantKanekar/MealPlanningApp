@@ -60,6 +60,7 @@ dependencies {
     implementation(libs.ui.graphics)
     implementation(libs.ui.tooling.preview)
     implementation(libs.material3)
+    implementation(libs.material.icons)
     implementation(libs.navigation)
     implementation(libs.androidx.navigation.runtime.ktx)
     testImplementation(libs.junit)
