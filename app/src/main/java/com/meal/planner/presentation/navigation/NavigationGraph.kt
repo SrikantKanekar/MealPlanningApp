@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.meal.planner.model.enums.FoodScreenType
 import com.meal.planner.presentation.ui.diet.DietScreen
 import com.meal.planner.presentation.ui.food.FoodScreen
 import com.meal.planner.presentation.ui.home.HomeScreen
@@ -49,12 +50,18 @@ fun NavigationGraph() {
         composable(route = NavigationRoute.Meal.route) {
             MealScreen(
                 navigateBack = { navController.popBackStack() },
-                navigateToFood = { navController.navigate(NavigationRoute.Food.route) }
+                navigateToFoodAdd = { navController.navigate(NavigationRoute.Food(FoodScreenType.ADD).route) },
+                navigateToFoodEdit = { navController.navigate(NavigationRoute.Food(FoodScreenType.EDIT).route) }
             )
         }
 
-        composable(route = NavigationRoute.Food.route) {
-            FoodScreen()
+        composable(route = NavigationRoute.Food().route) { backStackEntry ->
+            val type = backStackEntry.arguments?.getString("type")
+            val foodScreenType = if (type == "ADD") FoodScreenType.ADD else FoodScreenType.EDIT
+            FoodScreen(
+                navigateBack = { navController.popBackStack() },
+                foodScreenType = foodScreenType
+            )
         }
 
         composable(route = NavigationRoute.Settings.route) {

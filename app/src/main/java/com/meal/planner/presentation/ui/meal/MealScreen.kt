@@ -61,7 +61,8 @@ import java.util.Locale
 @Composable
 fun MealScreen(
     navigateBack: () -> Unit,
-    navigateToFood: () -> Unit
+    navigateToFoodAdd: () -> Unit,
+    navigateToFoodEdit: () -> Unit
 ) {
     val meal = Meal(
         "Morning",
@@ -136,7 +137,7 @@ fun MealScreen(
             )
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = { }) {
+            FloatingActionButton(onClick = navigateToFoodAdd) {
                 Icon(
                     imageVector = Icons.Filled.Add,
                     contentDescription = "Add Food"
@@ -159,7 +160,7 @@ fun MealScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .clickable {
-                            navigateToFood()
+                            navigateToFoodEdit()
                         }
                 ) {
                     Row(
