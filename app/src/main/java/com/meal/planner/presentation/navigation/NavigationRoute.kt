@@ -11,6 +11,8 @@ sealed class NavigationRoute(
 
     object Home : NavigationRoute("Home")
 
+    object CreateDiet : NavigationRoute("CreateDiet")
+
     object Diet : NavigationRoute("Diet")
 
     object Meal : NavigationRoute("Meal")

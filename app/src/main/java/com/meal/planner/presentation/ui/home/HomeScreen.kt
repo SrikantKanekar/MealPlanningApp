@@ -34,6 +34,7 @@ import java.time.DayOfWeek
 @Composable
 fun HomeScreen(
     navigateToDiet: () -> Unit,
+    navigateToCreateDiet: () -> Unit,
     navigateToSettings: () -> Unit
 ) {
     val diets = listOf(
@@ -64,10 +65,10 @@ fun HomeScreen(
             )
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = { }) {
+            FloatingActionButton(onClick = navigateToCreateDiet) {
                 Icon(
                     imageVector = Icons.Filled.Add,
-                    contentDescription = "Add diet"
+                    contentDescription = "Create diet"
                 )
             }
         }

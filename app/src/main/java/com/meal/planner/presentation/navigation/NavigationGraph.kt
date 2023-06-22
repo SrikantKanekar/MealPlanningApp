@@ -7,6 +7,7 @@ import androidx.navigation.compose.rememberNavController
 import com.meal.planner.model.enums.FoodScreenType
 import com.meal.planner.presentation.ui.diet.DietScreen
 import com.meal.planner.presentation.ui.food.FoodScreen
+import com.meal.planner.presentation.ui.home.CreateDietScreen
 import com.meal.planner.presentation.ui.home.HomeScreen
 import com.meal.planner.presentation.ui.meal.MealScreen
 import com.meal.planner.presentation.ui.settings.SettingsScreen
@@ -36,7 +37,14 @@ fun NavigationGraph() {
         composable(route = NavigationRoute.Home.route) {
             HomeScreen(
                 navigateToDiet = { navController.navigate(NavigationRoute.Diet.route) },
+                navigateToCreateDiet = { navController.navigate(NavigationRoute.CreateDiet.route) },
                 navigateToSettings = { navController.navigate(NavigationRoute.Settings.route) }
+            )
+        }
+
+        composable(route = NavigationRoute.CreateDiet.route) {
+            CreateDietScreen(
+                navigateBack = { navController.popBackStack() },
             )
         }
 
