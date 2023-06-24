@@ -37,6 +37,7 @@ import androidx.compose.material3.TimePicker
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -49,8 +50,6 @@ import androidx.compose.ui.semantics.isContainer
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
-import com.meal.planner.model.Food
-import com.meal.planner.model.Meal
 import com.meal.planner.presentation.components.TimePickerDialog
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -60,26 +59,20 @@ import java.util.Locale
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MealScreen(
+    viewModel: MealViewModel,
     navigateBack: () -> Unit,
     navigateToFoodAdd: () -> Unit,
     navigateToFoodEdit: () -> Unit
 ) {
-    val meal = Meal(
-        "Morning",
-        listOf(
-            Food("Smoothie", 1.0, 1.0, 1.0, 1.0),
-            Food("Banana", 1.0, 1.0, 1.0, 1.0)
-        ),
-        "7:30 AM"
-    )
+    val uiState by viewModel.uiState.collectAsState()
 
     var menuExpanded by remember { mutableStateOf(false) }
 
     var showTimePicker by remember { mutableStateOf(false) }
+    val showingPicker = remember { mutableStateOf(true) }
     val state = rememberTimePickerState()
     val formatter = remember { SimpleDateFormat("hh:mm a", Locale.getDefault()) }
     val snackState = remember { SnackbarHostState() }
-    val showingPicker = remember { mutableStateOf(true) }
     val snackScope = rememberCoroutineScope()
     val configuration = LocalConfiguration.current
 
@@ -94,7 +87,7 @@ fun MealScreen(
                         )
                     }
                 },
-                title = { Text(text = meal.name) },
+                title = { uiState.meal?.let { Text(text = it.name) } },
                 actions = {
                     PlainTooltipBox(tooltip = { Text(text = "Time") }) {
                         IconButton(
@@ -155,7 +148,7 @@ fun MealScreen(
                 .padding(horizontal = 16.dp, vertical = 16.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            meal.foods.map { food ->
+            uiState.meal?.foods?.map { food ->
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()

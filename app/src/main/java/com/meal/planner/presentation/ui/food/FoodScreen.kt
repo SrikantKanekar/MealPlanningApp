@@ -30,10 +30,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -49,20 +49,16 @@ import com.meal.planner.model.enums.FoodScreenType
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FoodScreen(
+    viewModel: FoodViewModel,
     navigateBack: () -> Unit,
     foodScreenType: FoodScreenType
 ) {
 
-    var menuExpanded by remember { mutableStateOf(false) }
+    val uiState by viewModel.uiState.collectAsState()
 
+    var menuExpanded by remember { mutableStateOf(false) }
     val focusRequester = remember { FocusRequester() }
     val focusManager = LocalFocusManager.current
-
-    var nameValue by rememberSaveable { mutableStateOf("") }
-    var proteinValue by rememberSaveable { mutableStateOf("") }
-    var carbValue by rememberSaveable { mutableStateOf("") }
-    var fatValue by rememberSaveable { mutableStateOf("") }
-    var quantityValue by rememberSaveable { mutableStateOf("") }
 
     fun isValidDouble(value: String) = value.toDoubleOrNull() != null
 
@@ -135,8 +131,8 @@ fun FoodScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .focusRequester(focusRequester),
-                value = nameValue,
-                onValueChange = { nameValue = it },
+                value = uiState.name,
+                onValueChange = { viewModel.updateName(it) },
                 label = {
                     Text(text = "Name")
                 },
@@ -155,15 +151,15 @@ fun FoodScreen(
 
             OutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
-                value = proteinValue,
-                onValueChange = { proteinValue = it },
+                value = uiState.protein,
+                onValueChange = { viewModel.updateProtein(it) },
                 label = {
                     Text(text = "Proteins")
                 },
-                isError = proteinValue.isNotEmpty() && !isValidDouble(proteinValue),
+                isError = uiState.protein.isNotEmpty() && !isValidDouble(uiState.protein),
                 supportingText = {
                     Text(
-                        if (proteinValue.isNotEmpty() && !isValidDouble(proteinValue))
+                        if (uiState.protein.isNotEmpty() && !isValidDouble(uiState.protein))
                             "Please enter a valid value"
                         else
                             "Proteins per 100g in grams"
@@ -181,15 +177,15 @@ fun FoodScreen(
 
             OutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
-                value = carbValue,
-                onValueChange = { carbValue = it },
+                value = uiState.carb,
+                onValueChange = { viewModel.updateCarb(it) },
                 label = {
                     Text(text = "Carbs")
                 },
-                isError = carbValue.isNotEmpty() && !isValidDouble(carbValue),
+                isError = uiState.carb.isNotEmpty() && !isValidDouble(uiState.carb),
                 supportingText = {
                     Text(
-                        if (carbValue.isNotEmpty() && !isValidDouble(carbValue))
+                        if (uiState.carb.isNotEmpty() && !isValidDouble(uiState.carb))
                             "Please enter a valid value"
                         else
                             "Carbs per 100g in grams"
@@ -207,15 +203,15 @@ fun FoodScreen(
 
             OutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
-                value = fatValue,
-                onValueChange = { fatValue = it },
+                value = uiState.fat,
+                onValueChange = { viewModel.updateFat(it) },
                 label = {
                     Text(text = "Fats")
                 },
-                isError = fatValue.isNotEmpty() && !isValidDouble(fatValue),
+                isError = uiState.fat.isNotEmpty() && !isValidDouble(uiState.fat),
                 supportingText = {
                     Text(
-                        if (fatValue.isNotEmpty() && !isValidDouble(fatValue))
+                        if (uiState.fat.isNotEmpty() && !isValidDouble(uiState.fat))
                             "Please enter a valid value"
                         else
                             "Fats per 100g in grams"
@@ -233,15 +229,15 @@ fun FoodScreen(
 
             OutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
-                value = quantityValue,
-                onValueChange = { quantityValue = it },
+                value = uiState.quantity,
+                onValueChange = { viewModel.updateQuantity(it) },
                 label = {
                     Text(text = "Quantity")
                 },
-                isError = quantityValue.isNotEmpty() && !isValidDouble(quantityValue),
+                isError = uiState.quantity.isNotEmpty() && !isValidDouble(uiState.quantity),
                 supportingText = {
                     Text(
-                        if (quantityValue.isNotEmpty() && !isValidDouble(quantityValue))
+                        if (uiState.quantity.isNotEmpty() && !isValidDouble(uiState.quantity))
                             "Please enter a valid value"
                         else
                             "Quantity in grams"
@@ -256,11 +252,11 @@ fun FoodScreen(
 
             Button(
                 onClick = navigateBack,
-                enabled = nameValue.isNotBlank() &&
-                        isValidDouble(proteinValue) &&
-                        isValidDouble(carbValue) &&
-                        isValidDouble(fatValue) &&
-                        isValidDouble(quantityValue),
+                enabled = uiState.name.isNotBlank() &&
+                        isValidDouble(uiState.protein) &&
+                        isValidDouble(uiState.carb) &&
+                        isValidDouble(uiState.fat) &&
+                        isValidDouble(uiState.quantity),
                 contentPadding = PaddingValues(horizontal = 50.dp, vertical = 10.dp)
             ) {
                 Icon(imageVector = Icons.Filled.Check, contentDescription = "button icon")

@@ -24,6 +24,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -31,39 +32,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.meal.planner.model.Diet
-import com.meal.planner.model.Food
-import com.meal.planner.model.Meal
-import java.time.DayOfWeek
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DietScreen(
+    viewModel: DietViewModel,
     navigateBack: () -> Unit,
     navigateToMeal: () -> Unit
 ) {
-    val diet = Diet(
-        "Non veg",
-        listOf(
-            Meal(
-                "Morning",
-                listOf(
-                    Food("Smoothie", 1.0, 1.0, 1.0, 1.0),
-                    Food("Banana", 1.0, 1.0, 1.0, 1.0)
-                ),
-                "7:30 AM"
-            ),
-            Meal(
-                "Lunch",
-                listOf(
-                    Food("Quinoa", 1.0, 1.0, 1.0, 1.0),
-                    Food("Salad", 1.0, 1.0, 1.0, 1.0)
-                ),
-                "1:30 PM"
-            )
-        ),
-        listOf(DayOfWeek.WEDNESDAY, DayOfWeek.FRIDAY, DayOfWeek.SATURDAY, DayOfWeek.SUNDAY)
-    )
+    val uiState by viewModel.uiState.collectAsState()
 
     var menuExpanded by remember { mutableStateOf(false) }
 
@@ -78,7 +55,7 @@ fun DietScreen(
                         )
                     }
                 },
-                title = { Text(text = diet.name) },
+                title = { uiState.diet?.let { Text(text = it.name) } },
                 actions = {
                     IconButton(onClick = { }) {
                         Icon(
@@ -126,7 +103,7 @@ fun DietScreen(
                 .padding(horizontal = 16.dp, vertical = 20.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            diet.meals.map { meal ->
+            uiState.diet?.meals?.map { meal ->
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
