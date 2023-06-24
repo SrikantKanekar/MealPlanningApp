@@ -23,32 +23,22 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.meal.planner.model.Diet
-import java.time.DayOfWeek
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
+    viewModel: HomeViewModel,
     navigateToDiet: () -> Unit,
     navigateToCreateDiet: () -> Unit,
     navigateToSettings: () -> Unit
 ) {
-    val diets = listOf(
-        Diet(
-            "Non veg",
-            listOf(),
-            listOf(DayOfWeek.WEDNESDAY, DayOfWeek.FRIDAY, DayOfWeek.SATURDAY, DayOfWeek.SUNDAY)
-        ),
-        Diet(
-            "Veg",
-            listOf(),
-            listOf(DayOfWeek.MONDAY, DayOfWeek.TUESDAY, DayOfWeek.THURSDAY)
-        ),
-    )
+    val uiState by viewModel.uiState.collectAsState()
 
     Scaffold(
         topBar = {
@@ -82,7 +72,7 @@ fun HomeScreen(
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
 
-            diets.map { diet ->
+            uiState.diets.map { diet ->
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()

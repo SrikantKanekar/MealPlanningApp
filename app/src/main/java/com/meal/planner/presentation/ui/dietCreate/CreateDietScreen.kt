@@ -27,11 +27,9 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
@@ -46,27 +44,17 @@ import java.time.DayOfWeek
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreateDietScreen(
+    viewModel: CreateDietViewModel,
     navigateBack: () -> Unit
 ) {
 
-    var nameValue by rememberSaveable { mutableStateOf("") }
-    var daysOfWeek by rememberSaveable { mutableStateOf<List<DayOfWeek>>(listOf()) }
+    val uiState by viewModel.uiState.collectAsState()
 
     val focusRequester = remember { FocusRequester() }
     val focusManager = LocalFocusManager.current
 
     LaunchedEffect(Unit) {
         focusRequester.requestFocus()
-    }
-
-    fun toggleDays(day: DayOfWeek) {
-        val list = ArrayList(daysOfWeek)
-        if (list.contains(day)) {
-            list.remove(day)
-        } else {
-            list.add(day)
-        }
-        daysOfWeek = list
     }
 
     Scaffold(
@@ -104,8 +92,8 @@ fun CreateDietScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .focusRequester(focusRequester),
-                    value = nameValue,
-                    onValueChange = { nameValue = it },
+                    value = uiState.name,
+                    onValueChange = { viewModel.updateName(it) },
                     label = {
                         Text("Name")
                     },
@@ -139,18 +127,17 @@ fun CreateDietScreen(
                         DayOfWeek.values().map { day ->
                             DayOfWeekButton(
                                 dayOfWeek = day,
-                                onClick = { toggleDays(day) },
-                                enabled = daysOfWeek.contains(day)
+                                onClick = { viewModel.toggleDay(day) },
+                                enabled = uiState.daysOfWeek.contains(day)
                             )
                         }
                     }
                 }
-
             }
 
             Button(
                 onClick = navigateBack,
-                enabled = nameValue.isNotBlank(),
+                enabled = uiState.name.isNotBlank(),
                 contentPadding = PaddingValues(horizontal = 50.dp, vertical = 10.dp)
             ) {
                 Icon(imageVector = Icons.Filled.Check, contentDescription = "button icon")

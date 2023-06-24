@@ -1,14 +1,17 @@
 package com.meal.planner.presentation.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.meal.planner.model.enums.FoodScreenType
 import com.meal.planner.presentation.ui.diet.DietScreen
-import com.meal.planner.presentation.ui.food.FoodScreen
 import com.meal.planner.presentation.ui.dietCreate.CreateDietScreen
+import com.meal.planner.presentation.ui.dietCreate.CreateDietViewModel
+import com.meal.planner.presentation.ui.food.FoodScreen
 import com.meal.planner.presentation.ui.home.HomeScreen
+import com.meal.planner.presentation.ui.home.HomeViewModel
 import com.meal.planner.presentation.ui.meal.MealScreen
 import com.meal.planner.presentation.ui.settings.SettingsScreen
 import com.meal.planner.presentation.ui.startup.DietTypeScreen
@@ -35,7 +38,9 @@ fun NavigationGraph() {
         }
 
         composable(route = NavigationRoute.Home.route) {
+            val homeViewModel = viewModel<HomeViewModel>()
             HomeScreen(
+                viewModel = homeViewModel,
                 navigateToDiet = { navController.navigate(NavigationRoute.Diet.route) },
                 navigateToCreateDiet = { navController.navigate(NavigationRoute.CreateDiet.route) },
                 navigateToSettings = { navController.navigate(NavigationRoute.Settings.route) }
@@ -43,7 +48,9 @@ fun NavigationGraph() {
         }
 
         composable(route = NavigationRoute.CreateDiet.route) {
+            val createDietViewModel = viewModel<CreateDietViewModel>()
             CreateDietScreen(
+                viewModel = createDietViewModel,
                 navigateBack = { navController.popBackStack() },
             )
         }
