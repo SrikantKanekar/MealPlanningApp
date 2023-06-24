@@ -7,7 +7,7 @@ import androidx.navigation.compose.rememberNavController
 import com.meal.planner.model.enums.FoodScreenType
 import com.meal.planner.presentation.ui.diet.DietScreen
 import com.meal.planner.presentation.ui.food.FoodScreen
-import com.meal.planner.presentation.ui.home.CreateDietScreen
+import com.meal.planner.presentation.ui.dietCreate.CreateDietScreen
 import com.meal.planner.presentation.ui.home.HomeScreen
 import com.meal.planner.presentation.ui.meal.MealScreen
 import com.meal.planner.presentation.ui.settings.SettingsScreen

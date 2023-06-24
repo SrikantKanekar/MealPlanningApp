@@ -1,4 +1,4 @@
-package com.meal.planner.presentation.ui.home
+package com.meal.planner.presentation.ui.dietCreate
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
