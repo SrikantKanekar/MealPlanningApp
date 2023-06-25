@@ -1,15 +1,21 @@
 package com.meal.planner.presentation.ui.diet
 
 import androidx.lifecycle.ViewModel
+import com.meal.planner.cache.database.DietDataSource
 import com.meal.planner.model.Diet
 import com.meal.planner.model.Food
 import com.meal.planner.model.Meal
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import java.time.DayOfWeek
+import javax.inject.Inject
 
-class DietViewModel : ViewModel() {
+@HiltViewModel
+class DietViewModel @Inject constructor(
+    private val dietDataSource: DietDataSource
+) : ViewModel() {
     private val _uiState = MutableStateFlow(DietUiState())
     val uiState: StateFlow<DietUiState> = _uiState
 
@@ -17,6 +23,7 @@ class DietViewModel : ViewModel() {
         _uiState.update {
             it.copy(
                 diet = Diet(
+                    1,
                     "Non veg",
                     listOf(
                         Meal(

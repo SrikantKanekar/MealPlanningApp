@@ -22,6 +22,10 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
+        ksp {
+            arg("room.schemaLocation", "$projectDir/schemas")
+        }
     }
 
     buildTypes {
@@ -68,6 +72,7 @@ dependencies {
 
     implementation(libs.navigation)
     implementation(libs.androidx.navigation.runtime.ktx)
+    implementation(libs.androidx.hilt.navigation.compose)
 
     // Dagger Hilt
     implementation(libs.hilt.android)
@@ -82,6 +87,8 @@ dependencies {
 
     // DataStore
     implementation(libs.androidx.datastore)
+
+    implementation(libs.gson)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)

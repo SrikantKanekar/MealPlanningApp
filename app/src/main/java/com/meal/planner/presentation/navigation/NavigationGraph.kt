@@ -1,7 +1,7 @@
 package com.meal.planner.presentation.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -40,8 +40,8 @@ fun NavigationGraph() {
             )
         }
 
-        composable(route = NavigationRoute.Home.route) {
-            val homeViewModel = viewModel<HomeViewModel>()
+        composable(route = NavigationRoute.Home.route) { backStackEntry ->
+            val homeViewModel = hiltViewModel<HomeViewModel>(backStackEntry)
             HomeScreen(
                 viewModel = homeViewModel,
                 navigateToDiet = { navController.navigate(NavigationRoute.Diet.route) },
@@ -50,16 +50,16 @@ fun NavigationGraph() {
             )
         }
 
-        composable(route = NavigationRoute.CreateDiet.route) {
-            val createDietViewModel = viewModel<CreateDietViewModel>()
+        composable(route = NavigationRoute.CreateDiet.route) { backStackEntry ->
+            val createDietViewModel = hiltViewModel<CreateDietViewModel>(backStackEntry)
             CreateDietScreen(
                 viewModel = createDietViewModel,
                 navigateBack = { navController.popBackStack() },
             )
         }
 
-        composable(route = NavigationRoute.Diet.route) {
-            val dietViewModel = viewModel<DietViewModel>()
+        composable(route = NavigationRoute.Diet.route) { backStackEntry ->
+            val dietViewModel = hiltViewModel<DietViewModel>(backStackEntry)
             DietScreen(
                 viewModel = dietViewModel,
                 navigateBack = { navController.popBackStack() },
@@ -67,8 +67,8 @@ fun NavigationGraph() {
             )
         }
 
-        composable(route = NavigationRoute.Meal.route) {
-            val mealViewModel = viewModel<MealViewModel>()
+        composable(route = NavigationRoute.Meal.route) { backStackEntry ->
+            val mealViewModel = hiltViewModel<MealViewModel>(backStackEntry)
             MealScreen(
                 viewModel = mealViewModel,
                 navigateBack = { navController.popBackStack() },
@@ -78,7 +78,7 @@ fun NavigationGraph() {
         }
 
         composable(route = NavigationRoute.Food().route) { backStackEntry ->
-            val foodViewModel = viewModel<FoodViewModel>()
+            val foodViewModel = hiltViewModel<FoodViewModel>(backStackEntry)
             val type = backStackEntry.arguments?.getString("type")
             val foodScreenType = if (type == "ADD") FoodScreenType.ADD else FoodScreenType.EDIT
             FoodScreen(
