@@ -21,12 +21,14 @@ import com.meal.planner.presentation.ui.startup.DietTypeScreen
 import com.meal.planner.presentation.ui.startup.EnterWeightScreen
 
 @Composable
-fun NavigationGraph() {
+fun NavigationGraph(
+    startDestination: String
+) {
     val navController = rememberNavController()
 
     NavHost(
         navController = navController,
-        startDestination = NavigationRoute.Home.route
+        startDestination = startDestination
     ) {
         composable(route = NavigationRoute.EnterWeight.route) {
             EnterWeightScreen(

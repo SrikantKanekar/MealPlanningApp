@@ -7,7 +7,9 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import com.meal.planner.model.enums.DietType
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -28,6 +30,17 @@ class SettingDataStore @Inject constructor(
         .map { settings ->
             DietType.valueOf(settings[dietTypeKey] ?: DietType.BULKING.name)
         }
+
+    fun getWeight() = runBlocking {
+        val settings = context.settingDataStore.data.first()
+        settings[weightKey]
+    }
+
+
+    fun getDietType() = runBlocking {
+        val settings = context.settingDataStore.data.first()
+        DietType.valueOf(settings[dietTypeKey] ?: DietType.NULL.name)
+    }
 
     suspend fun updateWeight(weight: Double) {
         context.settingDataStore.edit { settings ->

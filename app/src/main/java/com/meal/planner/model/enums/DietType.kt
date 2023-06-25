@@ -1,5 +1,5 @@
 package com.meal.planner.model.enums
 
 enum class DietType {
-    BULKING, CUTTING, MAINTAINING
+    BULKING, CUTTING, MAINTAINING, NULL
 }
