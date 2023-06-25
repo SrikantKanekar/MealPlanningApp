@@ -19,10 +19,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -31,12 +29,18 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun EnterWeightScreen(
+    viewModel: StartupViewModel,
     navigate: () -> Unit
 ) {
 
-    var weightValue by rememberSaveable { mutableStateOf("") }
+    val uiState by viewModel.uiState.collectAsState()
 
-    val isValidWeight = weightValue.toDoubleOrNull() != null
+    val isValidWeight = uiState.weight.toDoubleOrNull() != null
+
+    fun saveAndNavigate() {
+        viewModel.saveWeight()
+        navigate()
+    }
 
     Column(
         modifier = Modifier
@@ -59,15 +63,15 @@ fun EnterWeightScreen(
 
             OutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
-                value = weightValue,
-                onValueChange = { weightValue = it },
+                value = uiState.weight,
+                onValueChange = { viewModel.updateWeight(it) },
                 placeholder = {
                     Text(text = "Example: 60kg")
                 },
-                isError = weightValue.isNotEmpty() && !isValidWeight,
+                isError = uiState.weight.isNotEmpty() && !isValidWeight,
                 supportingText = {
                     Text(
-                        if (weightValue.isNotEmpty() && !isValidWeight)
+                        if (uiState.weight.isNotEmpty() && !isValidWeight)
                             "Please enter a valid weight"
                         else
                             "Enter your current weight in kg"
@@ -76,13 +80,13 @@ fun EnterWeightScreen(
                 singleLine = true,
                 keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
                 keyboardActions = KeyboardActions(
-                    onDone = { if (isValidWeight) navigate() }
+                    onDone = { if (isValidWeight) saveAndNavigate() }
                 )
             )
         }
 
         Button(
-            onClick = navigate,
+            onClick = { saveAndNavigate() },
             enabled = isValidWeight,
             contentPadding = PaddingValues(horizontal = 50.dp, vertical = 10.dp)
         ) {

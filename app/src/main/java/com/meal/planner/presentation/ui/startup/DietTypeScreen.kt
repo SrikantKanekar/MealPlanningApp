@@ -18,10 +18,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -31,9 +29,15 @@ import com.meal.planner.model.enums.DietType
 
 @Composable
 fun DietTypeScreen(
+    viewModel: StartupViewModel,
     navigate: () -> Unit
 ) {
-    var dietType by rememberSaveable { mutableStateOf(DietType.BULKING) }
+    val uiState by viewModel.uiState.collectAsState()
+
+    fun saveAndNavigate() {
+        viewModel.saveDietType()
+        navigate()
+    }
 
     Column(
         modifier = Modifier
@@ -54,44 +58,47 @@ fun DietTypeScreen(
 
             Spacer(modifier = Modifier.height(40.dp))
 
-            DietType.values().forEach { type ->
-                val isSelected = dietType == type
+            DietType
+                .values()
+                .filter { it != DietType.NULL }
+                .forEach { type ->
+                    val isSelected = uiState.dietType == type
 
-                val buttonModifier = Modifier
-                    .padding(vertical = 18.dp, horizontal = 6.dp)
-                    .fillMaxWidth()
-                    .height(55.dp)
+                    val buttonModifier = Modifier
+                        .padding(vertical = 18.dp, horizontal = 6.dp)
+                        .fillMaxWidth()
+                        .height(55.dp)
 
-                if (isSelected) {
-                    Button(
-                        modifier = buttonModifier,
-                        onClick = { dietType = type },
-                    ) {
-                        Box(modifier = Modifier.fillMaxWidth()) {
-                            Icon(
-                                imageVector = Icons.Filled.Check,
-                                contentDescription = "Next button icon"
-                            )
-                            Text(
-                                modifier = Modifier.fillMaxWidth(),
-                                text = type.name,
-                                textAlign = TextAlign.Center
-                            )
+                    if (isSelected) {
+                        Button(
+                            modifier = buttonModifier,
+                            onClick = { viewModel.updateDietType(type) },
+                        ) {
+                            Box(modifier = Modifier.fillMaxWidth()) {
+                                Icon(
+                                    imageVector = Icons.Filled.Check,
+                                    contentDescription = "Next button icon"
+                                )
+                                Text(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    text = type.name,
+                                    textAlign = TextAlign.Center
+                                )
+                            }
+                        }
+                    } else {
+                        OutlinedButton(
+                            modifier = buttonModifier,
+                            onClick = { viewModel.updateDietType(type) },
+                        ) {
+                            Text(text = type.name)
                         }
                     }
-                } else {
-                    OutlinedButton(
-                        modifier = buttonModifier,
-                        onClick = { dietType = type },
-                    ) {
-                        Text(text = type.name)
-                    }
                 }
-            }
         }
 
         Button(
-            onClick = navigate,
+            onClick = { saveAndNavigate() },
             contentPadding = PaddingValues(horizontal = 50.dp, vertical = 10.dp)
         ) {
             Icon(imageVector = Icons.Filled.Check, contentDescription = "Next button icon")

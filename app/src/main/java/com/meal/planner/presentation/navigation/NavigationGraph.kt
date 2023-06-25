@@ -19,6 +19,7 @@ import com.meal.planner.presentation.ui.meal.MealViewModel
 import com.meal.planner.presentation.ui.settings.SettingsScreen
 import com.meal.planner.presentation.ui.startup.DietTypeScreen
 import com.meal.planner.presentation.ui.startup.EnterWeightScreen
+import com.meal.planner.presentation.ui.startup.StartupViewModel
 
 @Composable
 fun NavigationGraph(
@@ -30,14 +31,18 @@ fun NavigationGraph(
         navController = navController,
         startDestination = startDestination
     ) {
-        composable(route = NavigationRoute.EnterWeight.route) {
+        composable(route = NavigationRoute.EnterWeight.route) { backStackEntry ->
+            val startupViewModel = hiltViewModel<StartupViewModel>(backStackEntry)
             EnterWeightScreen(
+                viewModel = startupViewModel,
                 navigate = { navController.navigate(NavigationRoute.DietType.route) }
             )
         }
 
-        composable(route = NavigationRoute.DietType.route) {
+        composable(route = NavigationRoute.DietType.route) { backStackEntry ->
+            val startupViewModel = hiltViewModel<StartupViewModel>(backStackEntry)
             DietTypeScreen(
+                viewModel = startupViewModel,
                 navigate = { navController.navigate(NavigationRoute.Home.route) }
             )
         }
