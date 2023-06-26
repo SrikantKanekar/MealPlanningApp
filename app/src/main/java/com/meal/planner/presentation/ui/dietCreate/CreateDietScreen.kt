@@ -136,7 +136,10 @@ fun CreateDietScreen(
             }
 
             Button(
-                onClick = navigateBack,
+                onClick = {
+                    viewModel.createDiet()
+                    navigateBack()
+                },
                 enabled = uiState.name.isNotBlank(),
                 contentPadding = PaddingValues(horizontal = 50.dp, vertical = 10.dp)
             ) {

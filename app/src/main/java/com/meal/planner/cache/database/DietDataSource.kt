@@ -51,10 +51,11 @@ class DietDataSource @Inject constructor(
         }
     }
 
-    suspend fun getDiet(id: String): Diet? {
-        return cacheCall(IO) {
-            dietDao.getDiet(id)?.let { dietEntity ->
-                dietMapper(dietEntity)
+    fun getDiet(id: String): Flow<Diet?> {
+        return dietDao.getDiet(id).map { dietEntity ->
+            when (dietEntity) {
+                null -> null
+                else -> dietMapper(dietEntity)
             }
         }
     }

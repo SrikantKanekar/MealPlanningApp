@@ -19,7 +19,7 @@ interface DietDao {
     suspend fun deleteDiets(ids: List<String>): Int
 
     @Query("SELECT * FROM diet_table WHERE id = :id")
-    suspend fun getDiet(id: String): DietEntity?
+    fun getDiet(id: String): Flow<DietEntity?>
 
     @Query("SELECT * FROM diet_table")
     fun getAllDiets(): Flow<List<DietEntity>>

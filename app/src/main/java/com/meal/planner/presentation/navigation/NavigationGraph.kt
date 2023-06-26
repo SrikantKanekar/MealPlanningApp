@@ -51,7 +51,7 @@ fun NavigationGraph(
             val homeViewModel = hiltViewModel<HomeViewModel>(backStackEntry)
             HomeScreen(
                 viewModel = homeViewModel,
-                navigateToDiet = { navController.navigate(NavigationRoute.Diet.route) },
+                navigateToDiet = { navController.navigate(NavigationRoute.Diet(it).route) },
                 navigateToCreateDiet = { navController.navigate(NavigationRoute.CreateDiet.route) },
                 navigateToSettings = { navController.navigate(NavigationRoute.Settings.route) }
             )
@@ -65,19 +65,25 @@ fun NavigationGraph(
             )
         }
 
-        composable(route = NavigationRoute.Diet.route) { backStackEntry ->
+        composable(route = NavigationRoute.Diet().route) { backStackEntry ->
             val dietViewModel = hiltViewModel<DietViewModel>(backStackEntry)
+            val dietId = backStackEntry.arguments?.getString("id")
             DietScreen(
                 viewModel = dietViewModel,
+                dietId = dietId,
                 navigateBack = { navController.popBackStack() },
-                navigateToMeal = { navController.navigate(NavigationRoute.Meal.route) }
+                navigateToMeal = { navController.navigate(NavigationRoute.Meal(dietId, it).route) }
             )
         }
 
-        composable(route = NavigationRoute.Meal.route) { backStackEntry ->
+        composable(route = NavigationRoute.Meal().route) { backStackEntry ->
             val mealViewModel = hiltViewModel<MealViewModel>(backStackEntry)
+            val dietId = backStackEntry.arguments?.getString("dietId")
+            val mealId = backStackEntry.arguments?.getString("mealId")
             MealScreen(
                 viewModel = mealViewModel,
+                dietId = dietId,
+                mealId = mealId,
                 navigateBack = { navController.popBackStack() },
                 navigateToFoodAdd = { navController.navigate(NavigationRoute.Food(FoodScreenType.ADD).route) },
                 navigateToFoodEdit = { navController.navigate(NavigationRoute.Food(FoodScreenType.EDIT).route) }

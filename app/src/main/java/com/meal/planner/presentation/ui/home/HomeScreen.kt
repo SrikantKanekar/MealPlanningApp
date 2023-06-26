@@ -34,7 +34,7 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel,
-    navigateToDiet: () -> Unit,
+    navigateToDiet: (String) -> Unit,
     navigateToCreateDiet: () -> Unit,
     navigateToSettings: () -> Unit
 ) {
@@ -77,7 +77,7 @@ fun HomeScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .clickable {
-                            navigateToDiet()
+                            navigateToDiet(diet.id.toString())
                         }
                 ) {
                     Column(

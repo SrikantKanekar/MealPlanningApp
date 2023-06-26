@@ -24,6 +24,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -37,12 +38,17 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun DietScreen(
     viewModel: DietViewModel,
+    dietId: String?,
     navigateBack: () -> Unit,
-    navigateToMeal: () -> Unit
+    navigateToMeal: (String) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
     var menuExpanded by remember { mutableStateOf(false) }
+
+    LaunchedEffect(Unit) {
+        viewModel.loadDiet(dietId)
+    }
 
     Scaffold(
         topBar = {
@@ -108,7 +114,7 @@ fun DietScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .clickable {
-                            navigateToMeal()
+                            navigateToMeal(meal.id)
                         }
                 ) {
                     Column(

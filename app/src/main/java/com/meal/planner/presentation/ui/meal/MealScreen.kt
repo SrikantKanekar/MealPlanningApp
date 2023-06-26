@@ -37,6 +37,7 @@ import androidx.compose.material3.TimePicker
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -60,6 +61,8 @@ import java.util.Locale
 @Composable
 fun MealScreen(
     viewModel: MealViewModel,
+    dietId: String?,
+    mealId: String?,
     navigateBack: () -> Unit,
     navigateToFoodAdd: () -> Unit,
     navigateToFoodEdit: () -> Unit
@@ -75,6 +78,10 @@ fun MealScreen(
     val snackState = remember { SnackbarHostState() }
     val snackScope = rememberCoroutineScope()
     val configuration = LocalConfiguration.current
+
+    LaunchedEffect(Unit) {
+        viewModel.loadMeal(dietId, mealId)
+    }
 
     Scaffold(
         topBar = {
