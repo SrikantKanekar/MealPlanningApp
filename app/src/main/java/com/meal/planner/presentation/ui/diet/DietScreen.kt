@@ -40,6 +40,7 @@ fun DietScreen(
     viewModel: DietViewModel,
     dietId: String?,
     navigateBack: () -> Unit,
+    navigateToCreateMeal: (String) -> Unit,
     navigateToMeal: (String) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -94,7 +95,7 @@ fun DietScreen(
             )
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = { }) {
+            FloatingActionButton(onClick = { dietId?.let { navigateToCreateMeal(it) } }) {
                 Icon(
                     imageVector = Icons.Filled.Add,
                     contentDescription = "Add meal"

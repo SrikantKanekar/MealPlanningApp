@@ -6,7 +6,7 @@ fun dietMapper(obj: DietEntity): Diet {
     return Diet(
         id = obj.id,
         name = obj.name,
-        meals = obj.meals,
+        meals = ArrayList(obj.meals),
         daysOfWeek = obj.daysOfWeek
     )
 }

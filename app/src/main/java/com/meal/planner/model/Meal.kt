@@ -4,5 +4,5 @@ data class Meal(
     val id: String,
     val name: String,
     val foods: ArrayList<Food>,
-    val timing: String
+    val timing: Int
 )

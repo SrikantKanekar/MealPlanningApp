@@ -13,6 +13,9 @@ sealed class NavigationRoute(
 
     class Diet(id: String? = null) : NavigationRoute(if (id == null) "Diet/{id}" else "Diet/$id")
 
+    class CreateMeal(dietId: String? = null) :
+        NavigationRoute(if (dietId == null) "CreateMeal/{dietId}" else "CreateMeal/$dietId")
+
     class Meal(
         dietId: String? = null,
         mealId: String? = null
@@ -30,10 +33,10 @@ sealed class NavigationRoute(
         foodId: String? = null
     ) :
         NavigationRoute(
-            if (dietId == null || mealId == null || foodId == null)
+            if (dietId == null || mealId == null)
                 "Food/{dietId}/{mealId}/{foodId}"
             else
-                "Food/$dietId/$mealId/$foodId"
+                "Food/$dietId/$mealId/${foodId ?: ""}"
         )
 
     object Settings : NavigationRoute("Settings")

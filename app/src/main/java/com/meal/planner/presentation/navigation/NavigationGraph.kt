@@ -15,6 +15,8 @@ import com.meal.planner.presentation.ui.home.HomeScreen
 import com.meal.planner.presentation.ui.home.HomeViewModel
 import com.meal.planner.presentation.ui.meal.MealScreen
 import com.meal.planner.presentation.ui.meal.MealViewModel
+import com.meal.planner.presentation.ui.mealCreate.CreateMealScreen
+import com.meal.planner.presentation.ui.mealCreate.CreateMealViewModel
 import com.meal.planner.presentation.ui.settings.SettingsScreen
 import com.meal.planner.presentation.ui.startup.DietTypeScreen
 import com.meal.planner.presentation.ui.startup.EnterWeightScreen
@@ -71,7 +73,18 @@ fun NavigationGraph(
                 viewModel = dietViewModel,
                 dietId = dietId,
                 navigateBack = { navController.popBackStack() },
+                navigateToCreateMeal = { navController.navigate(NavigationRoute.CreateMeal(it).route) },
                 navigateToMeal = { navController.navigate(NavigationRoute.Meal(dietId, it).route) }
+            )
+        }
+
+        composable(route = NavigationRoute.CreateMeal().route) { backStackEntry ->
+            val createMealViewModel = hiltViewModel<CreateMealViewModel>(backStackEntry)
+            val dietId = backStackEntry.arguments?.getString("dietId")
+            CreateMealScreen(
+                viewModel = createMealViewModel,
+                dietId = dietId,
+                navigateBack = { navController.popBackStack() },
             )
         }
 
@@ -84,7 +97,15 @@ fun NavigationGraph(
                 dietId = dietId,
                 mealId = mealId,
                 navigateBack = { navController.popBackStack() },
-                navigateToFood = { navController.navigate(NavigationRoute.Food(dietId, mealId, it).route) },
+                navigateToFood = {
+                    navController.navigate(
+                        NavigationRoute.Food(
+                            dietId,
+                            mealId,
+                            it
+                        ).route
+                    )
+                },
             )
         }
 

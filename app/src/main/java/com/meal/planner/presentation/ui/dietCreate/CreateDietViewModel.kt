@@ -41,7 +41,7 @@ class CreateDietViewModel @Inject constructor(
                     Diet(
                         id = 0,
                         name = _uiState.value.name,
-                        meals = listOf(),
+                        meals = arrayListOf(),
                         daysOfWeek = _uiState.value.daysOfWeek
                     )
                 )
