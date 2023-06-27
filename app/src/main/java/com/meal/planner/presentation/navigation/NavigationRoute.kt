@@ -1,7 +1,5 @@
 package com.meal.planner.presentation.navigation
 
-import com.meal.planner.model.enums.FoodScreenType
-
 sealed class NavigationRoute(
     val route: String
 ) {
@@ -15,11 +13,28 @@ sealed class NavigationRoute(
 
     class Diet(id: String? = null) : NavigationRoute(if (id == null) "Diet/{id}" else "Diet/$id")
 
-    class Meal(dietId: String? = null, mealId: String? = null) :
-        NavigationRoute(if (dietId == null || mealId == null) "Meal/{dietId}/{mealId}" else "Meal/$dietId/$mealId")
+    class Meal(
+        dietId: String? = null,
+        mealId: String? = null
+    ) :
+        NavigationRoute(
+            if (dietId == null || mealId == null)
+                "Meal/{dietId}/{mealId}"
+            else
+                "Meal/$dietId/$mealId"
+        )
 
-    class Food(foodScreenType: FoodScreenType? = null) :
-        NavigationRoute(if (foodScreenType == null) "Food/{type}" else "Food/$foodScreenType")
+    class Food(
+        dietId: String? = null,
+        mealId: String? = null,
+        foodId: String? = null
+    ) :
+        NavigationRoute(
+            if (dietId == null || mealId == null || foodId == null)
+                "Food/{dietId}/{mealId}/{foodId}"
+            else
+                "Food/$dietId/$mealId/$foodId"
+        )
 
     object Settings : NavigationRoute("Settings")
 }

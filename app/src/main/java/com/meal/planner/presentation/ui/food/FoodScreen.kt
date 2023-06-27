@@ -44,14 +44,15 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import com.meal.planner.model.enums.FoodScreenType
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FoodScreen(
     viewModel: FoodViewModel,
+    dietId: String?,
+    mealId: String?,
+    foodId: String?,
     navigateBack: () -> Unit,
-    foodScreenType: FoodScreenType
 ) {
 
     val uiState by viewModel.uiState.collectAsState()
@@ -63,14 +64,23 @@ fun FoodScreen(
     fun isValidDouble(value: String) = value.toDoubleOrNull() != null
 
     LaunchedEffect(Unit) {
-        if (foodScreenType == FoodScreenType.ADD) focusRequester.requestFocus()
+        viewModel.loadFood(dietId, mealId, foodId)
+    }
+
+    LaunchedEffect(uiState.isEditMode) {
+        if (!uiState.isEditMode) focusRequester.requestFocus()
     }
 
     Scaffold(
         topBar = {
             TopAppBar(
                 navigationIcon = {
-                    IconButton(onClick = navigateBack) {
+                    IconButton(
+                        onClick = {
+                            viewModel.saveFood(dietId, mealId)
+                            navigateBack()
+                        }
+                    ) {
                         Icon(
                             imageVector = Icons.Filled.ArrowBack,
                             contentDescription = "back"
@@ -79,14 +89,14 @@ fun FoodScreen(
                 },
                 title = {
                     Text(
-                        text = if (foodScreenType == FoodScreenType.ADD)
-                            "Add Food"
-                        else
+                        text = if (uiState.isEditMode)
                             "Edit Food"
+                        else
+                            "Add Food"
                     )
                 },
                 actions = {
-                    if (foodScreenType == FoodScreenType.EDIT) {
+                    if (uiState.isEditMode) {
                         Box {
                             PlainTooltipBox(tooltip = { Text(text = "More") }) {
                                 IconButton(
@@ -107,6 +117,7 @@ fun FoodScreen(
                                     text = { Text("Delete Food") },
                                     onClick = {
                                         menuExpanded = false
+                                        viewModel.deleteFood(dietId, mealId)
                                         navigateBack()
                                     }
                                 )
@@ -251,7 +262,10 @@ fun FoodScreen(
             )
 
             Button(
-                onClick = navigateBack,
+                onClick = {
+                    viewModel.saveFood(dietId, mealId)
+                    navigateBack()
+                },
                 enabled = uiState.name.isNotBlank() &&
                         isValidDouble(uiState.protein) &&
                         isValidDouble(uiState.carb) &&
@@ -261,7 +275,7 @@ fun FoodScreen(
             ) {
                 Icon(imageVector = Icons.Filled.Check, contentDescription = "button icon")
                 Spacer(modifier = Modifier.width(10.dp))
-                Text(text = if (foodScreenType == FoodScreenType.ADD) "Add" else "Update")
+                Text(text = if (uiState.isEditMode) "Update" else "Add")
             }
         }
     }

@@ -5,7 +5,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.meal.planner.model.enums.FoodScreenType
 import com.meal.planner.presentation.ui.diet.DietScreen
 import com.meal.planner.presentation.ui.diet.DietViewModel
 import com.meal.planner.presentation.ui.dietCreate.CreateDietScreen
@@ -85,19 +84,21 @@ fun NavigationGraph(
                 dietId = dietId,
                 mealId = mealId,
                 navigateBack = { navController.popBackStack() },
-                navigateToFoodAdd = { navController.navigate(NavigationRoute.Food(FoodScreenType.ADD).route) },
-                navigateToFoodEdit = { navController.navigate(NavigationRoute.Food(FoodScreenType.EDIT).route) }
+                navigateToFood = { navController.navigate(NavigationRoute.Food(dietId, mealId, it).route) },
             )
         }
 
         composable(route = NavigationRoute.Food().route) { backStackEntry ->
             val foodViewModel = hiltViewModel<FoodViewModel>(backStackEntry)
-            val type = backStackEntry.arguments?.getString("type")
-            val foodScreenType = if (type == "ADD") FoodScreenType.ADD else FoodScreenType.EDIT
+            val dietId = backStackEntry.arguments?.getString("dietId")
+            val mealId = backStackEntry.arguments?.getString("mealId")
+            val foodId = backStackEntry.arguments?.getString("foodId")
             FoodScreen(
                 viewModel = foodViewModel,
-                navigateBack = { navController.popBackStack() },
-                foodScreenType = foodScreenType
+                dietId = dietId,
+                mealId = mealId,
+                foodId = foodId,
+                navigateBack = { navController.popBackStack() }
             )
         }
 

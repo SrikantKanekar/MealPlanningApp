@@ -64,8 +64,7 @@ fun MealScreen(
     dietId: String?,
     mealId: String?,
     navigateBack: () -> Unit,
-    navigateToFoodAdd: () -> Unit,
-    navigateToFoodEdit: () -> Unit
+    navigateToFood: (String?) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
@@ -137,7 +136,7 @@ fun MealScreen(
             )
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = navigateToFoodAdd) {
+            FloatingActionButton(onClick = { navigateToFood(null) }) {
                 Icon(
                     imageVector = Icons.Filled.Add,
                     contentDescription = "Add Food"
@@ -160,7 +159,7 @@ fun MealScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .clickable {
-                            navigateToFoodEdit()
+                            navigateToFood(food.id)
                         }
                 ) {
                     Row(

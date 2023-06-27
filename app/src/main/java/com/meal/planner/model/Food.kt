@@ -1,9 +1,10 @@
 package com.meal.planner.model
 
 data class Food(
-    val name: String,
-    val proteins: Double,
-    val carbs: Double,
-    val fats: Double,
-    val quantity: Double
+    val id: String,
+    var name: String,
+    var proteins: Double,
+    var carbs: Double,
+    var fats: Double,
+    var quantity: Double
 )

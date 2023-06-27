@@ -51,8 +51,8 @@ class DietDataSource @Inject constructor(
         }
     }
 
-    fun getDiet(id: String): Flow<Diet?> {
-        return dietDao.getDiet(id).map { dietEntity ->
+    fun dietFlow(id: String): Flow<Diet?> {
+        return dietDao.dietFlow(id).map { dietEntity ->
             when (dietEntity) {
                 null -> null
                 else -> dietMapper(dietEntity)
@@ -60,9 +60,25 @@ class DietDataSource @Inject constructor(
         }
     }
 
-    fun getAllDiets(): Flow<List<Diet>> {
-        return dietDao.getAllDiets().map { entities ->
+    suspend fun getDiet(id: String): Diet? {
+        return cacheCall(IO) {
+            dietDao.getDiet(id)?.let { dietEntity ->
+                dietMapper(dietEntity)
+            }
+        }
+    }
+
+    fun dietListFlow(): Flow<List<Diet>> {
+        return dietDao.dietListFlow().map { entities ->
             entities.map { dietMapper(it) }
+        }
+    }
+
+    suspend fun getAllDiets(): List<Diet>? {
+        return cacheCall(IO) {
+            dietDao.getAllDiets().map { dietEntity ->
+                dietMapper(dietEntity)
+            }
         }
     }
 }

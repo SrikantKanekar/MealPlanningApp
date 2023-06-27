@@ -20,7 +20,7 @@ class MealViewModel @Inject constructor(
     fun loadMeal(dietId: String?, mealId: String?) {
         viewModelScope.launch {
             if (dietId != null && mealId != null) {
-                dietDataSource.getDiet(dietId).collect { diet ->
+                dietDataSource.dietFlow(dietId).collect { diet ->
                     if (diet != null) {
                         _uiState.update {
                             it.copy(

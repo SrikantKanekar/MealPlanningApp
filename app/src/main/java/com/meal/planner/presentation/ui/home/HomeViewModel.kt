@@ -20,7 +20,7 @@ class HomeViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            dietDataSource.getAllDiets().collect { diets ->
+            dietDataSource.dietListFlow().collect { diets ->
                 _uiState.update { it.copy(diets = diets) }
             }
         }
