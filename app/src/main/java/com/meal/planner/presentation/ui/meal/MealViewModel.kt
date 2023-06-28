@@ -34,4 +34,19 @@ class MealViewModel @Inject constructor(
             }
         }
     }
+
+    fun updateMealTime(dietId: String?, value: Int) {
+        viewModelScope.launch {
+            if (dietId != null) {
+                val diet = dietDataSource.getDiet(dietId)
+
+                if (diet != null) {
+                    diet.meals
+                        .first { it.id == _uiState.value.meal?.id }
+                        .apply { timing = value }
+                    dietDataSource.updateDiets(listOf(diet))
+                }
+            }
+        }
+    }
 }

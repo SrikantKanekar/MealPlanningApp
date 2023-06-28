@@ -26,4 +26,12 @@ class DietViewModel @Inject constructor(
             }
         }
     }
+
+    fun deleteDiet(id: String?) {
+        viewModelScope.launch {
+            if (id != null) {
+                dietDataSource.deleteDiets(listOf(id))
+            }
+        }
+    }
 }

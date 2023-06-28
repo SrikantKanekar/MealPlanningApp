@@ -33,6 +33,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -86,6 +88,7 @@ fun DietScreen(
                                 text = { Text("Delete Diet") },
                                 onClick = {
                                     menuExpanded = false
+                                    viewModel.deleteDiet(dietId)
                                     navigateBack()
                                 }
                             )
@@ -133,7 +136,9 @@ fun DietScreen(
                                 style = MaterialTheme.typography.titleLarge
                             )
                             Text(
-                                text = "7:30 AM",
+                                text = LocalTime
+                                    .ofSecondOfDay(meal.timing.toLong())
+                                    .format(DateTimeFormatter.ISO_LOCAL_TIME),
                                 style = MaterialTheme.typography.labelLarge
                             )
                         }

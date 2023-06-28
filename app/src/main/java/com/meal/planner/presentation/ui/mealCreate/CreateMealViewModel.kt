@@ -40,7 +40,7 @@ class CreateMealViewModel @Inject constructor(
                             id = UUID.randomUUID().toString(),
                             name = _uiState.value.name,
                             foods = arrayListOf(),
-                            timing = _uiState.value.timing.second
+                            timing = _uiState.value.timing.toSecondOfDay()
                         )
                     )
 

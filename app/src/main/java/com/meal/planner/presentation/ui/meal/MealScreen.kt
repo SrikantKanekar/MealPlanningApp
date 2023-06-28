@@ -54,6 +54,7 @@ import androidx.compose.ui.zIndex
 import com.meal.planner.presentation.components.TimePickerDialog
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
+import java.time.LocalTime
 import java.util.Calendar
 import java.util.Locale
 
@@ -201,6 +202,10 @@ fun MealScreen(
                 cal.set(Calendar.HOUR_OF_DAY, state.hour)
                 cal.set(Calendar.MINUTE, state.minute)
                 cal.isLenient = false
+                viewModel.updateMealTime(
+                    dietId,
+                    LocalTime.of(state.hour, state.minute).toSecondOfDay()
+                )
                 snackScope.launch {
                     snackState.showSnackbar("Updated time: ${formatter.format(cal.time)}")
                 }
