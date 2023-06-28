@@ -36,7 +36,7 @@ sealed class NavigationRoute(
             if (dietId == null || mealId == null)
                 "Food/{dietId}/{mealId}/{foodId}"
             else
-                "Food/$dietId/$mealId/${foodId ?: ""}"
+                "Food/$dietId/$mealId/$foodId"
         )
 
     object Settings : NavigationRoute("Settings")

@@ -118,7 +118,7 @@ fun NavigationGraph(
                 viewModel = foodViewModel,
                 dietId = dietId,
                 mealId = mealId,
-                foodId = foodId,
+                foodId = if (foodId == "null") null else foodId,
                 navigateBack = { navController.popBackStack() }
             )
         }
