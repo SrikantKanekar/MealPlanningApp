@@ -28,16 +28,18 @@ class FoodViewModel @Inject constructor(
                             .meals
                             .first { meal -> meal.id == mealId }
                             .foods
-                            .first { food -> food.id == foodId }
-                        _uiState.update {
-                            it.copy(
-                                id = food.id,
-                                name = food.name,
-                                protein = food.proteins.toString(),
-                                carb = food.carbs.toString(),
-                                fat = food.fats.toString(),
-                                quantity = food.quantity.toString()
-                            )
+                            .find { food -> food.id == foodId }
+                        if (food != null) {
+                            _uiState.update {
+                                it.copy(
+                                    id = food.id,
+                                    name = food.name,
+                                    protein = food.proteins.toString(),
+                                    carb = food.carbs.toString(),
+                                    fat = food.fats.toString(),
+                                    quantity = food.quantity.toString()
+                                )
+                            }
                         }
                     }
                 }

@@ -24,7 +24,7 @@ class MealViewModel @Inject constructor(
                     if (diet != null) {
                         _uiState.update {
                             it.copy(
-                                meal = diet.meals.first { meal ->
+                                meal = diet.meals.find { meal ->
                                     meal.id == mealId
                                 }
                             )
@@ -44,6 +44,22 @@ class MealViewModel @Inject constructor(
                     diet.meals
                         .first { it.id == _uiState.value.meal?.id }
                         .apply { timing = value }
+                    dietDataSource.updateDiets(listOf(diet))
+                }
+            }
+        }
+    }
+
+    fun deleteMeal(dietId: String?) {
+        viewModelScope.launch {
+            if (dietId != null) {
+                val diet = dietDataSource.getDiet(dietId)
+
+                if (diet != null) {
+                    diet
+                        .meals
+                        .removeIf { it.id == _uiState.value.meal?.id }
+
                     dietDataSource.updateDiets(listOf(diet))
                 }
             }

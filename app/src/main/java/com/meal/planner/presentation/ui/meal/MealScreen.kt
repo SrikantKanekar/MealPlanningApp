@@ -128,6 +128,7 @@ fun MealScreen(
                                 text = { Text("Delete Meal") },
                                 onClick = {
                                     menuExpanded = false
+                                    viewModel.deleteMeal(dietId)
                                     navigateBack()
                                 }
                             )
