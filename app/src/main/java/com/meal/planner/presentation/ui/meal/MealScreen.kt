@@ -35,7 +35,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TimeInput
 import androidx.compose.material3.TimePicker
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -53,10 +52,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.meal.planner.presentation.components.TimePickerDialog
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
 import java.time.LocalTime
-import java.util.Calendar
-import java.util.Locale
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -73,8 +71,6 @@ fun MealScreen(
 
     var showTimePicker by remember { mutableStateOf(false) }
     val showingPicker = remember { mutableStateOf(true) }
-    val state = rememberTimePickerState()
-    val formatter = remember { SimpleDateFormat("hh:mm a", Locale.getDefault()) }
     val snackState = remember { SnackbarHostState() }
     val snackScope = rememberCoroutineScope()
     val configuration = LocalConfiguration.current
@@ -199,16 +195,12 @@ fun MealScreen(
             title = if (showingPicker.value) "Select Time " else "Enter Time",
             onCancel = { showTimePicker = false },
             onConfirm = {
-                val cal = Calendar.getInstance()
-                cal.set(Calendar.HOUR_OF_DAY, state.hour)
-                cal.set(Calendar.MINUTE, state.minute)
-                cal.isLenient = false
-                viewModel.updateMealTime(
-                    dietId,
-                    LocalTime.of(state.hour, state.minute).toSecondOfDay()
-                )
+                viewModel.updateMealTime(dietId)
+                val time = LocalTime
+                    .of(uiState.timePickerState.hour, uiState.timePickerState.minute)
+                    .format(DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT))
                 snackScope.launch {
-                    snackState.showSnackbar("Updated time: ${formatter.format(cal.time)}")
+                    snackState.showSnackbar("Updated time: $time")
                 }
                 showTimePicker = false
             },
@@ -246,9 +238,9 @@ fun MealScreen(
             }
         ) {
             if (showingPicker.value && configuration.screenHeightDp > 400) {
-                TimePicker(state = state)
+                TimePicker(state = uiState.timePickerState)
             } else {
-                TimeInput(state = state)
+                TimeInput(state = uiState.timePickerState)
             }
         }
     }

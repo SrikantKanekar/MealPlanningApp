@@ -1,5 +1,7 @@
 package com.meal.planner.presentation.ui.meal
 
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.TimePickerState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.meal.planner.cache.database.DietDataSource
@@ -8,8 +10,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.time.LocalTime
 import javax.inject.Inject
 
+@OptIn(ExperimentalMaterial3Api::class)
 @HiltViewModel
 class MealViewModel @Inject constructor(
     private val dietDataSource: DietDataSource
@@ -22,11 +26,17 @@ class MealViewModel @Inject constructor(
             if (dietId != null && mealId != null) {
                 dietDataSource.dietFlow(dietId).collect { diet ->
                     if (diet != null) {
+                        val meal = diet.meals.find { meal -> meal.id == mealId }
+                        val localTime = LocalTime.ofSecondOfDay(meal?.timing?.toLong() ?: 0)
+
                         _uiState.update {
                             it.copy(
-                                meal = diet.meals.find { meal ->
-                                    meal.id == mealId
-                                }
+                                meal = meal,
+                                timePickerState = TimePickerState(
+                                    localTime.hour,
+                                    localTime.minute,
+                                    false
+                                )
                             )
                         }
                     }
@@ -35,7 +45,7 @@ class MealViewModel @Inject constructor(
         }
     }
 
-    fun updateMealTime(dietId: String?, value: Int) {
+    fun updateMealTime(dietId: String?) {
         viewModelScope.launch {
             if (dietId != null) {
                 val diet = dietDataSource.getDiet(dietId)
@@ -43,7 +53,13 @@ class MealViewModel @Inject constructor(
                 if (diet != null) {
                     diet.meals
                         .first { it.id == _uiState.value.meal?.id }
-                        .apply { timing = value }
+                        .apply {
+                            val timePickerState = _uiState.value.timePickerState
+                            val seconds = LocalTime
+                                .of(timePickerState.hour, timePickerState.minute)
+                                .toSecondOfDay()
+                            timing = seconds
+                        }
                     dietDataSource.updateDiets(listOf(diet))
                 }
             }

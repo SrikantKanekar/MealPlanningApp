@@ -35,6 +35,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -138,7 +139,7 @@ fun DietScreen(
                             Text(
                                 text = LocalTime
                                     .ofSecondOfDay(meal.timing.toLong())
-                                    .format(DateTimeFormatter.ISO_LOCAL_TIME),
+                                    .format(DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT)),
                                 style = MaterialTheme.typography.labelLarge
                             )
                         }
