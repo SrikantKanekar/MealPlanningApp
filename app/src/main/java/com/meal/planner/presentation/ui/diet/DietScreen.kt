@@ -4,9 +4,12 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
@@ -33,6 +36,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.meal.planner.util.capitalise
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
@@ -107,55 +111,55 @@ fun DietScreen(
             }
         }
     ) { paddingValues ->
-        Column(
+        LazyColumn(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(paddingValues)
-                .padding(horizontal = 16.dp, vertical = 20.dp),
-            verticalArrangement = Arrangement.spacedBy(10.dp)
+                .padding(paddingValues),
+            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 18.dp),
+            verticalArrangement = Arrangement.spacedBy(14.dp)
         ) {
-            uiState.diet?.meals?.map { meal ->
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable {
-                            navigateToMeal(meal.id)
-                        }
-                ) {
-                    Column(
+            if (uiState.diet != null) {
+                items(uiState.diet!!.meals) { meal ->
+                    Card(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(16.dp)
+                            .clickable { navigateToMeal(meal.id) }
                     ) {
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(20.dp)
                         ) {
-                            Text(
-                                text = meal.name,
-                                style = MaterialTheme.typography.titleLarge
-                            )
-                            Text(
-                                text = LocalTime
-                                    .ofSecondOfDay(meal.timing.toLong())
-                                    .format(DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT)),
-                                style = MaterialTheme.typography.labelLarge
-                            )
-                        }
-                        meal.foods.map { food ->
                             Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.SpaceBetween
+                                modifier = Modifier.fillMaxWidth().padding(bottom = 4.dp),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Text(
-                                    text = food.name,
-                                    style = MaterialTheme.typography.titleMedium
+                                    text = meal.name.capitalise(),
+                                    style = MaterialTheme.typography.titleLarge
                                 )
                                 Text(
-                                    text = food.quantity.toInt().toString() + " cal",
+                                    text = LocalTime
+                                        .ofSecondOfDay(meal.timing.toLong())
+                                        .format(DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT)),
                                     style = MaterialTheme.typography.labelLarge
                                 )
+                            }
+                            meal.foods.map { food ->
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.SpaceBetween
+                                ) {
+                                    Text(
+                                        text = food.name.capitalise(),
+                                        style = MaterialTheme.typography.labelLarge
+                                    )
+                                    Text(
+                                        text = food.quantity.toInt().toString() + " cal",
+                                        style = MaterialTheme.typography.labelLarge
+                                    )
+                                }
                             }
                         }
                     }

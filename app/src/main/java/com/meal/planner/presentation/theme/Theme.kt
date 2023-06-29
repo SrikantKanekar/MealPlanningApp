@@ -40,6 +40,7 @@ fun MealPlannerTheme(
 
     MaterialTheme(
         colorScheme = colorScheme,
+        shapes = shapes,
         content = content
     )
 }

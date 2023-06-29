@@ -3,7 +3,7 @@ package com.meal.planner.presentation.ui.meal
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccessTime
 import androidx.compose.material.icons.filled.Add
@@ -51,6 +53,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.meal.planner.presentation.components.TimePickerDialog
+import com.meal.planner.util.capitalise
 import kotlinx.coroutines.launch
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
@@ -145,44 +148,44 @@ fun MealScreen(
             SnackbarHost(hostState = snackState)
         }
     ) { paddingValues ->
-        Column(
+        LazyColumn(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(paddingValues)
-                .padding(horizontal = 16.dp, vertical = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(10.dp)
+                .padding(paddingValues),
+            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 18.dp),
+            verticalArrangement = Arrangement.spacedBy(14.dp)
         ) {
-            uiState.meal?.foods?.map { food ->
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable {
-                            navigateToFood(food.id)
-                        }
-                ) {
-                    Row(
+            if (uiState.meal != null) {
+                items(uiState.meal!!.foods) { food ->
+                    Card(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(vertical = 12.dp, horizontal = 20.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
+                            .clickable { navigateToFood(food.id) }
                     ) {
-                        Text(
-                            text = food.name,
-                            style = MaterialTheme.typography.titleMedium
-                        )
                         Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 14.dp, horizontal = 20.dp),
+                            horizontalArrangement = Arrangement.SpaceBetween,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text(
-                                text = "134 cal",
-                                style = MaterialTheme.typography.labelLarge
+                                text = food.name.capitalise(),
+                                style = MaterialTheme.typography.titleMedium
                             )
-                            Spacer(modifier = Modifier.width(5.dp))
-                            Icon(
-                                imageVector = Icons.Default.NavigateNext,
-                                contentDescription = "Edit Food"
-                            )
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(
+                                    text = "134 cal",
+                                    style = MaterialTheme.typography.labelLarge
+                                )
+                                Spacer(modifier = Modifier.width(5.dp))
+                                Icon(
+                                    imageVector = Icons.Default.NavigateNext,
+                                    contentDescription = "Edit Food"
+                                )
+                            }
                         }
                     }
                 }
