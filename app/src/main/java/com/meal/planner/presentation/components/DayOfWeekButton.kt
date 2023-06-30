@@ -2,8 +2,7 @@ package com.meal.planner.presentation.components
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
@@ -24,8 +23,7 @@ fun DayOfWeekButton(
     OutlinedButton(
         onClick = onClick,
         modifier = Modifier
-            .size(40.dp)
-            .fillMaxSize(1f),
+            .requiredSize(40.dp),
         shape = CircleShape,
         border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary),
         contentPadding = PaddingValues(0.dp),

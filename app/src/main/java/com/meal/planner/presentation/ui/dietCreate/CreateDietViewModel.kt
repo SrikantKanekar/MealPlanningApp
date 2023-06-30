@@ -30,12 +30,14 @@ class CreateDietViewModel @Inject constructor(
             days.remove(day)
         } else {
             days.add(day)
+            days.sort()
         }
         _uiState.update { it.copy(daysOfWeek = days) }
     }
 
     fun createDiet() {
         viewModelScope.launch {
+            clearDaysOfOtherDiets()
             dietDataSource.insertDiets(
                 listOf(
                     Diet(
@@ -46,6 +48,17 @@ class CreateDietViewModel @Inject constructor(
                     )
                 )
             )
+        }
+    }
+
+    private suspend fun clearDaysOfOtherDiets() {
+        val diets = dietDataSource.getAllDiets()
+
+        if (diets != null) {
+            diets.forEach { diet ->
+                diet.daysOfWeek.removeIf { _uiState.value.daysOfWeek.contains(it) }
+            }
+            dietDataSource.updateDiets(diets)
         }
     }
 }

@@ -4,5 +4,5 @@ import java.time.DayOfWeek
 
 data class CreateDietUiState(
     val name: String = "",
-    val daysOfWeek: List<DayOfWeek> = listOf()
+    val daysOfWeek: ArrayList<DayOfWeek> = arrayListOf()
 )

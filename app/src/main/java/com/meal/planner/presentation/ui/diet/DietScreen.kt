@@ -9,12 +9,16 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -25,6 +29,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -36,7 +41,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.meal.planner.presentation.components.DayOfWeekButton
 import com.meal.planner.util.capitalise
+import java.time.DayOfWeek
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
@@ -52,6 +59,7 @@ fun DietScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
+    var dialogOpened by remember { mutableStateOf(false) }
     var menuExpanded by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
@@ -71,7 +79,7 @@ fun DietScreen(
                 },
                 title = { uiState.diet?.let { Text(text = it.name) } },
                 actions = {
-                    IconButton(onClick = { }) {
+                    IconButton(onClick = { dialogOpened = true }) {
                         Icon(
                             imageVector = Icons.Filled.DateRange,
                             contentDescription = "Select days"
@@ -131,7 +139,9 @@ fun DietScreen(
                                 .padding(20.dp)
                         ) {
                             Row(
-                                modifier = Modifier.fillMaxWidth().padding(bottom = 4.dp),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(bottom = 4.dp),
                                 horizontalArrangement = Arrangement.SpaceBetween,
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
@@ -166,5 +176,33 @@ fun DietScreen(
                 }
             }
         }
+    }
+
+    if (dialogOpened) {
+        AlertDialog(
+            onDismissRequest = { dialogOpened = false },
+            title = { Text(text = "Select days") },
+            text = {
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(5),
+                    verticalArrangement = Arrangement.spacedBy(12.dp),
+                ) {
+                    items(DayOfWeek.values()) { day ->
+                        DayOfWeekButton(
+                            dayOfWeek = day,
+                            onClick = { viewModel.toggleDay(day) },
+                            enabled = uiState.daysOfWeek.contains(day)
+                        )
+                    }
+                }
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = { dialogOpened = false }
+                ) {
+                    Text("Close")
+                }
+            }
+        )
     }
 }
