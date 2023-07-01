@@ -1,6 +1,8 @@
 package com.meal.planner.presentation.ui.home.components
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -17,6 +19,8 @@ import com.meal.planner.model.toCalories
 import com.meal.planner.model.toCarbs
 import com.meal.planner.model.toFats
 import com.meal.planner.model.toProteins
+import com.meal.planner.presentation.components.DashboardIndicator
+import com.meal.planner.presentation.components.IndicatorSize
 import com.meal.planner.presentation.ui.home.HomeUiState
 import com.meal.planner.util.kgToPounds
 import com.meal.planner.util.targetCalories
@@ -52,7 +56,7 @@ fun DashboardCard(
                 style = MaterialTheme.typography.titleLarge
             )
             Text(
-                text = "Diet type: ${uiState.dietType.toName()}",
+                text = "Diet: ${uiState.dietType.toName()}",
                 style = MaterialTheme.typography.bodyMedium
             )
             Text(
@@ -60,48 +64,49 @@ fun DashboardCard(
                 style = MaterialTheme.typography.bodyMedium
             )
 
-            Spacer(modifier = Modifier.height(5.dp))
+            Spacer(modifier = Modifier.height(20.dp))
 
-            DashboardItem(
-                name = "Calories",
-                unit = "cal",
-                current = currentCalories,
-                target = targetCalories
-            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                DashboardIndicator(
+                    name = "Calories",
+                    unit = "cal",
+                    current = currentCalories,
+                    target = targetCalories,
+                    size = IndicatorSize.LARGE
+                )
+            }
 
-            DashboardItem(
-                name = "Proteins",
-                unit = "g",
-                current = currentProteins,
-                target = targetProteins
-            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceAround
+            ) {
+                DashboardIndicator(
+                    name = "Proteins",
+                    unit = "g",
+                    current = currentProteins,
+                    target = targetProteins,
+                    size = IndicatorSize.MEDIUM
+                )
 
-            DashboardItem(
-                name = "Carbs",
-                unit = "g",
-                current = currentCarbs,
-                target = targetCarbs
-            )
+                DashboardIndicator(
+                    name = "Carbs",
+                    unit = "g",
+                    current = currentCarbs,
+                    target = targetCarbs,
+                    size = IndicatorSize.MEDIUM
+                )
 
-            DashboardItem(
-                name = "Fats",
-                unit = "g",
-                current = currentFats,
-                target = targetFats
-            )
+                DashboardIndicator(
+                    name = "Fats",
+                    unit = "g",
+                    current = currentFats,
+                    target = targetFats,
+                    size = IndicatorSize.MEDIUM
+                )
+            }
         }
     }
-}
-
-@Composable
-fun DashboardItem(
-    name: String,
-    unit: String,
-    current: Int,
-    target: Int
-) {
-    Text(
-        text = "$name: $current/$target $unit",
-        style = MaterialTheme.typography.labelLarge
-    )
 }

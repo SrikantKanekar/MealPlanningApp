@@ -86,6 +86,14 @@ fun HomeScreen(
                 DashboardCard(uiState = uiState, diets = diets)
             }
 
+            item {
+                Text(
+                    modifier = Modifier.padding(start = 8.dp),
+                    text = "Diets",
+                    style = MaterialTheme.typography.labelLarge
+                )
+            }
+
             items(diets) { diet ->
                 val interactionSource = remember { MutableInteractionSource() }
 
