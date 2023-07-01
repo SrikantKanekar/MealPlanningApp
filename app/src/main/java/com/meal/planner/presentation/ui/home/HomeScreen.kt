@@ -35,6 +35,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.meal.planner.model.toCalories
+import com.meal.planner.presentation.ui.home.components.DashboardCard
 import com.meal.planner.util.capitalise
 import com.meal.planner.util.dayMap
 
@@ -80,6 +81,11 @@ fun HomeScreen(
         ) {
 
             val diets = uiState.diets.sortedBy { it.daysOfWeek.firstOrNull()?.value ?: 8 }
+
+            item {
+                DashboardCard(uiState = uiState, diets = diets)
+            }
+
             items(diets) { diet ->
                 val interactionSource = remember { MutableInteractionSource() }
 

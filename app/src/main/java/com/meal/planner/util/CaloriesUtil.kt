@@ -2,6 +2,8 @@ package com.meal.planner.util
 
 import com.meal.planner.model.enums.DietType
 
+fun Double.kgToPounds() = this * 2.20462
+
 fun Double.proteinToCalories() = this * 4
 
 fun Double.carbToCalories() = this * 4

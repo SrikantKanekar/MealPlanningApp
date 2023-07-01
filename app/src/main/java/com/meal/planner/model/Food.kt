@@ -15,3 +15,9 @@ data class Food(
 
 fun Food.toCalories() =
     (proteins.proteinToCalories() + carbs.carbToCalories() + fats.fatToCalories()) * quantity / 100
+
+fun Food.toProteins() = proteins * quantity / 100
+
+fun Food.toCarbs() = carbs * quantity / 100
+
+fun Food.toFats() = fats * quantity / 100
