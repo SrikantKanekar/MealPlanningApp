@@ -52,6 +52,7 @@ import androidx.compose.ui.semantics.isContainer
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import com.meal.planner.model.toCalories
 import com.meal.planner.presentation.components.TimePickerDialog
 import com.meal.planner.util.capitalise
 import kotlinx.coroutines.launch
@@ -177,7 +178,7 @@ fun MealScreen(
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Text(
-                                    text = "134 cal",
+                                    text = food.toCalories().toInt().toString() + " cal",
                                     style = MaterialTheme.typography.labelLarge
                                 )
                                 Spacer(modifier = Modifier.width(5.dp))

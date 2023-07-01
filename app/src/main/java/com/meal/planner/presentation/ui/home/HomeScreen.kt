@@ -34,6 +34,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.meal.planner.model.toCalories
 import com.meal.planner.util.capitalise
 import com.meal.planner.util.dayMap
 
@@ -78,7 +79,8 @@ fun HomeScreen(
             verticalArrangement = Arrangement.spacedBy(14.dp)
         ) {
 
-            items(uiState.diets) { diet ->
+            val diets = uiState.diets.sortedBy { it.daysOfWeek.firstOrNull()?.value ?: 8 }
+            items(diets) { diet ->
                 val interactionSource = remember { MutableInteractionSource() }
 
                 Card(
@@ -106,7 +108,11 @@ fun HomeScreen(
                                 fontSize = 26.sp
                             )
                             Text(
-                                text = "1983 cal",
+                                text = diet
+                                    .meals
+                                    .sumOf { it.foods.sumOf { food -> food.toCalories() } }
+                                    .toInt()
+                                    .toString() + " cal",
                                 style = MaterialTheme.typography.labelLarge
                             )
                         }

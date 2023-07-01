@@ -41,6 +41,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.meal.planner.model.toCalories
 import com.meal.planner.presentation.components.DayOfWeekButton
 import com.meal.planner.util.capitalise
 import java.time.DayOfWeek
@@ -127,7 +128,8 @@ fun DietScreen(
             verticalArrangement = Arrangement.spacedBy(14.dp)
         ) {
             if (uiState.diet != null) {
-                items(uiState.diet!!.meals) { meal ->
+                val meals = uiState.diet!!.meals.sortedBy { it.timing }
+                items(meals) { meal ->
                     Card(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -166,7 +168,7 @@ fun DietScreen(
                                         style = MaterialTheme.typography.labelLarge
                                     )
                                     Text(
-                                        text = food.quantity.toInt().toString() + " cal",
+                                        text = food.toCalories().toInt().toString() + " cal",
                                         style = MaterialTheme.typography.labelLarge
                                     )
                                 }
