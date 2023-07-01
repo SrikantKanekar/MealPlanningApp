@@ -54,7 +54,7 @@ fun EnterWeightScreen(
         ) {
             Text(
                 modifier = Modifier.fillMaxWidth(),
-                text = "Enter weight",
+                text = "Enter target weight",
                 style = MaterialTheme.typography.displayMedium,
                 fontWeight = FontWeight.Bold
             )
@@ -66,7 +66,7 @@ fun EnterWeightScreen(
                 value = uiState.weight,
                 onValueChange = { viewModel.updateWeight(it) },
                 placeholder = {
-                    Text(text = "Example: 60kg")
+                    Text(text = "Example: 65kg")
                 },
                 isError = uiState.weight.isNotEmpty() && !isValidWeight,
                 supportingText = {
@@ -74,7 +74,7 @@ fun EnterWeightScreen(
                         if (uiState.weight.isNotEmpty() && !isValidWeight)
                             "Please enter a valid weight"
                         else
-                            "Enter your current weight in kg"
+                            "Enter your target weight in kg"
                     )
                 },
                 singleLine = true,

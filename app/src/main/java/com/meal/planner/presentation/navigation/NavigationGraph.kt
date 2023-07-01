@@ -18,6 +18,7 @@ import com.meal.planner.presentation.ui.meal.MealViewModel
 import com.meal.planner.presentation.ui.mealCreate.CreateMealScreen
 import com.meal.planner.presentation.ui.mealCreate.CreateMealViewModel
 import com.meal.planner.presentation.ui.settings.SettingsScreen
+import com.meal.planner.presentation.ui.settings.SettingsViewModel
 import com.meal.planner.presentation.ui.startup.DietTypeScreen
 import com.meal.planner.presentation.ui.startup.EnterWeightScreen
 import com.meal.planner.presentation.ui.startup.StartupViewModel
@@ -123,8 +124,12 @@ fun NavigationGraph(
             )
         }
 
-        composable(route = NavigationRoute.Settings.route) {
-            SettingsScreen()
+        composable(route = NavigationRoute.Settings.route) { backStackEntry ->
+            val settingsViewModel = hiltViewModel<SettingsViewModel>(backStackEntry)
+            SettingsScreen(
+                viewModel = settingsViewModel,
+                navigateBack = { navController.popBackStack() }
+            )
         }
     }
 }
