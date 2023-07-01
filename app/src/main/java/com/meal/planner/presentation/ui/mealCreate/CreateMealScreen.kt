@@ -1,6 +1,5 @@
 package com.meal.planner.presentation.ui.mealCreate
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -43,6 +42,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.semantics.isContainer
@@ -54,6 +54,7 @@ import androidx.compose.ui.zIndex
 import com.meal.planner.presentation.components.TimePickerDialog
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -143,10 +144,15 @@ fun CreateMealScreen(
                     OutlinedTextField(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .clickable {
-                                showTimePicker = true
+                            .onFocusEvent {
+                                if (it.isFocused) {
+                                    showTimePicker = true
+                                    focusManager.clearFocus()
+                                }
                             },
-                        value = uiState.timing.format(DateTimeFormatter.ISO_LOCAL_TIME),
+                        value = uiState
+                            .timing
+                            .format(DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT)),
                         readOnly = true,
                         onValueChange = { },
                         label = { Text("Time") },
