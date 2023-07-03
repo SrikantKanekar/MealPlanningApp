@@ -15,7 +15,7 @@ class TypeConvertors {
 
     @TypeConverter
     fun toMeal(json: String): List<Meal> {
-        val sType = object : TypeToken<List<Meal>>() { }.type
+        val sType = object : TypeToken<List<Meal>>() {}.type
         return Gson().fromJson(json, sType)
     }
 
@@ -26,7 +26,7 @@ class TypeConvertors {
 
     @TypeConverter
     fun toDayOfWeek(json: String): List<DayOfWeek> {
-        val sType = object : TypeToken<List<DayOfWeek>>() { }.type
+        val sType = object : TypeToken<List<DayOfWeek>>() {}.type
         return Gson().fromJson(json, sType)
     }
 }

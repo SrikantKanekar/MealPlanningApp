@@ -162,7 +162,9 @@ fun FoodScreen(
             )
 
             OutlinedTextField(
-                modifier = Modifier.fillMaxWidth().padding(bottom = 20.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 20.dp),
                 value = uiState.protein,
                 onValueChange = { viewModel.updateProtein(it) },
                 label = {
@@ -188,7 +190,9 @@ fun FoodScreen(
             )
 
             OutlinedTextField(
-                modifier = Modifier.fillMaxWidth().padding(bottom = 20.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 20.dp),
                 value = uiState.carb,
                 onValueChange = { viewModel.updateCarb(it) },
                 label = {
@@ -214,7 +218,9 @@ fun FoodScreen(
             )
 
             OutlinedTextField(
-                modifier = Modifier.fillMaxWidth().padding(bottom = 20.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 20.dp),
                 value = uiState.fat,
                 onValueChange = { viewModel.updateFat(it) },
                 label = {
@@ -240,7 +246,9 @@ fun FoodScreen(
             )
 
             OutlinedTextField(
-                modifier = Modifier.fillMaxWidth().padding(bottom = 20.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 20.dp),
                 value = uiState.quantity,
                 onValueChange = { viewModel.updateQuantity(it) },
                 label = {

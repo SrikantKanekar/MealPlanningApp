@@ -36,8 +36,10 @@ fun HomeDashboardCard(
 ) {
     val totalDays = diets.sumOf { it.daysOfWeek.size }
 
-    val currentCalories = (diets.sumOf { it.toCalories() * it.daysOfWeek.size } / totalDays).roundToInt()
-    val currentProteins = (diets.sumOf { it.toProteins() * it.daysOfWeek.size } / totalDays).roundToInt()
+    val currentCalories =
+        (diets.sumOf { it.toCalories() * it.daysOfWeek.size } / totalDays).roundToInt()
+    val currentProteins =
+        (diets.sumOf { it.toProteins() * it.daysOfWeek.size } / totalDays).roundToInt()
     val currentCarbs = (diets.sumOf { it.toCarbs() * it.daysOfWeek.size } / totalDays).roundToInt()
     val currentFats = (diets.sumOf { it.toFats() * it.daysOfWeek.size } / totalDays).roundToInt()
 

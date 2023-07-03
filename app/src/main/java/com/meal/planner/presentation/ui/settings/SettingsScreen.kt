@@ -166,7 +166,9 @@ fun SettingsScreen(
             title = { Text(text = "Set Diet type") },
             text = {
                 Column(
-                    modifier = Modifier.fillMaxWidth().padding(top = 24.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 24.dp),
                     verticalArrangement = Arrangement.spacedBy(24.dp)
                 ) {
                     DietType
