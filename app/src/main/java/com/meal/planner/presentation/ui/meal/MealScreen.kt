@@ -54,7 +54,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.meal.planner.model.toCalories
 import com.meal.planner.presentation.components.TimePickerDialog
+import com.meal.planner.presentation.ui.meal.components.MealDashboardCard
 import com.meal.planner.util.capitalise
+import com.meal.planner.util.roundToInt
 import kotlinx.coroutines.launch
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
@@ -157,7 +159,21 @@ fun MealScreen(
             verticalArrangement = Arrangement.spacedBy(14.dp)
         ) {
             if (uiState.meal != null) {
-                items(uiState.meal!!.foods) { food ->
+                val foods = uiState.meal!!.foods
+
+                item {
+                    MealDashboardCard(uiState = uiState)
+                }
+
+                item {
+                    Text(
+                        modifier = Modifier.padding(start = 8.dp),
+                        text = if (foods.isNotEmpty()) "Foods" else "Add Foods",
+                        style = MaterialTheme.typography.labelLarge
+                    )
+                }
+
+                items(foods) { food ->
                     Card(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -178,7 +194,7 @@ fun MealScreen(
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Text(
-                                    text = food.toCalories().toInt().toString() + " cal",
+                                    text = food.toCalories().roundToInt().toString() + " cal",
                                     style = MaterialTheme.typography.labelLarge
                                 )
                                 Spacer(modifier = Modifier.width(5.dp))

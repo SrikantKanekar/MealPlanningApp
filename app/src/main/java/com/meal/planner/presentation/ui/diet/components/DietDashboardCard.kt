@@ -1,4 +1,4 @@
-package com.meal.planner.presentation.ui.home.components
+package com.meal.planner.presentation.ui.diet.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -13,37 +13,35 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.meal.planner.model.Diet
-import com.meal.planner.model.enums.toName
 import com.meal.planner.model.toCalories
 import com.meal.planner.model.toCarbs
 import com.meal.planner.model.toFats
 import com.meal.planner.model.toProteins
-import com.meal.planner.presentation.components.DashboardIndicator
+import com.meal.planner.presentation.components.Indicator
 import com.meal.planner.presentation.components.IndicatorSize
-import com.meal.planner.presentation.ui.home.HomeUiState
+import com.meal.planner.presentation.ui.diet.DietUiState
 import com.meal.planner.util.kgToPounds
+import com.meal.planner.util.roundToInt
 import com.meal.planner.util.targetCalories
 import com.meal.planner.util.targetCarbs
 import com.meal.planner.util.targetFats
 import com.meal.planner.util.targetProteins
 
 @Composable
-fun DashboardCard(
-    uiState: HomeUiState,
-    diets: List<Diet>
+fun DietDashboardCard(
+    uiState: DietUiState
 ) {
-    val totalDays = diets.sumOf { it.daysOfWeek.size }
+    val diet = uiState.diet!!
 
-    val currentCalories = (diets.sumOf { it.toCalories() } / totalDays).toInt()
-    val currentProteins = (diets.sumOf { it.toProteins() } / totalDays).toInt()
-    val currentCarbs = (diets.sumOf { it.toCarbs() } / totalDays).toInt()
-    val currentFats = (diets.sumOf { it.toFats() } / totalDays).toInt()
+    val currentCalories = diet.toCalories().roundToInt()
+    val currentProteins = diet.toProteins().roundToInt()
+    val currentCarbs = diet.toCarbs().roundToInt()
+    val currentFats = diet.toFats().roundToInt()
 
-    val targetCalories = targetCalories(uiState.weight.kgToPounds(), uiState.dietType).toInt()
-    val targetProteins = targetProteins(uiState.weight.kgToPounds(), uiState.dietType).toInt()
-    val targetCarbs = targetCarbs(uiState.weight.kgToPounds(), uiState.dietType).toInt()
-    val targetFats = targetFats(uiState.weight.kgToPounds(), uiState.dietType).toInt()
+    val targetCalories = targetCalories(uiState.weight.kgToPounds(), uiState.dietType).roundToInt()
+    val targetProteins = targetProteins(uiState.weight.kgToPounds(), uiState.dietType).roundToInt()
+    val targetCarbs = targetCarbs(uiState.weight.kgToPounds(), uiState.dietType).roundToInt()
+    val targetFats = targetFats(uiState.weight.kgToPounds(), uiState.dietType).roundToInt()
 
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -52,16 +50,8 @@ fun DashboardCard(
             modifier = Modifier.padding(20.dp)
         ) {
             Text(
-                text = "Weekly average report",
+                text = "Diet report",
                 style = MaterialTheme.typography.titleLarge
-            )
-            Text(
-                text = "Diet: ${uiState.dietType.toName()}",
-                style = MaterialTheme.typography.bodyMedium
-            )
-            Text(
-                text = "Target weight: ${uiState.weight} kg",
-                style = MaterialTheme.typography.bodyMedium
             )
 
             Spacer(modifier = Modifier.height(20.dp))
@@ -70,7 +60,7 @@ fun DashboardCard(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center
             ) {
-                DashboardIndicator(
+                Indicator(
                     name = "Calories",
                     unit = "cal",
                     current = currentCalories,
@@ -83,7 +73,7 @@ fun DashboardCard(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceAround
             ) {
-                DashboardIndicator(
+                Indicator(
                     name = "Proteins",
                     unit = "g",
                     current = currentProteins,
@@ -91,7 +81,7 @@ fun DashboardCard(
                     size = IndicatorSize.MEDIUM
                 )
 
-                DashboardIndicator(
+                Indicator(
                     name = "Carbs",
                     unit = "g",
                     current = currentCarbs,
@@ -99,7 +89,7 @@ fun DashboardCard(
                     size = IndicatorSize.MEDIUM
                 )
 
-                DashboardIndicator(
+                Indicator(
                     name = "Fats",
                     unit = "g",
                     current = currentFats,

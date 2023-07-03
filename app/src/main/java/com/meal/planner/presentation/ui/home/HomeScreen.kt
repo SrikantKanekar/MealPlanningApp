@@ -35,9 +35,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.meal.planner.model.toCalories
-import com.meal.planner.presentation.ui.home.components.DashboardCard
+import com.meal.planner.presentation.ui.home.components.HomeDashboardCard
 import com.meal.planner.util.capitalise
 import com.meal.planner.util.dayMap
+import com.meal.planner.util.roundToInt
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -83,13 +84,13 @@ fun HomeScreen(
             val diets = uiState.diets.sortedBy { it.daysOfWeek.firstOrNull()?.value ?: 8 }
 
             item {
-                DashboardCard(uiState = uiState, diets = diets)
+                HomeDashboardCard(uiState = uiState, diets = diets)
             }
 
             item {
                 Text(
                     modifier = Modifier.padding(start = 8.dp),
-                    text = "Diets",
+                    text = if (diets.isNotEmpty()) "Diets" else "Add Diets",
                     style = MaterialTheme.typography.labelLarge
                 )
             }
@@ -125,7 +126,7 @@ fun HomeScreen(
                                 text = diet
                                     .meals
                                     .sumOf { it.foods.sumOf { food -> food.toCalories() } }
-                                    .toInt()
+                                    .roundToInt()
                                     .toString() + " cal",
                                 style = MaterialTheme.typography.labelLarge
                             )

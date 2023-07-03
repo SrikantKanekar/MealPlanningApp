@@ -43,7 +43,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.meal.planner.model.toCalories
 import com.meal.planner.presentation.components.DayOfWeekButton
+import com.meal.planner.presentation.ui.diet.components.DietDashboardCard
 import com.meal.planner.util.capitalise
+import com.meal.planner.util.roundToInt
 import java.time.DayOfWeek
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
@@ -129,6 +131,19 @@ fun DietScreen(
         ) {
             if (uiState.diet != null) {
                 val meals = uiState.diet!!.meals.sortedBy { it.timing }
+
+                item {
+                    DietDashboardCard(uiState = uiState)
+                }
+
+                item {
+                    Text(
+                        modifier = Modifier.padding(start = 8.dp),
+                        text = if (meals.isNotEmpty()) "Meals" else "Add Meals",
+                        style = MaterialTheme.typography.labelLarge
+                    )
+                }
+
                 items(meals) { meal ->
                     Card(
                         modifier = Modifier
@@ -168,7 +183,7 @@ fun DietScreen(
                                         style = MaterialTheme.typography.labelLarge
                                     )
                                     Text(
-                                        text = food.toCalories().toInt().toString() + " cal",
+                                        text = food.toCalories().roundToInt().toString() + " cal",
                                         style = MaterialTheme.typography.labelLarge
                                     )
                                 }
