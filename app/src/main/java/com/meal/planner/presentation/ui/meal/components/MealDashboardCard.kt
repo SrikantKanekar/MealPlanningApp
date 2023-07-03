@@ -37,7 +37,9 @@ fun MealDashboardCard(
         modifier = Modifier.fillMaxWidth(),
     ) {
         Column(
-            modifier = Modifier.padding(20.dp)
+            modifier = Modifier
+                .padding(20.dp)
+                .padding(bottom = 10.dp)
         ) {
             Text(
                 text = "Meal report",
