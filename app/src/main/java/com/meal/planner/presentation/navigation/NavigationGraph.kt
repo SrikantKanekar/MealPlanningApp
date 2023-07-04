@@ -54,15 +54,17 @@ fun NavigationGraph(
             HomeScreen(
                 viewModel = homeViewModel,
                 navigateToDiet = { navController.navigate(NavigationRoute.Diet(it).route) },
-                navigateToCreateDiet = { navController.navigate(NavigationRoute.CreateDiet.route) },
+                navigateToCreateDiet = { navController.navigate(NavigationRoute.CreateDiet().route) },
                 navigateToSettings = { navController.navigate(NavigationRoute.Settings.route) }
             )
         }
 
-        composable(route = NavigationRoute.CreateDiet.route) { backStackEntry ->
+        composable(route = NavigationRoute.CreateDiet().route) { backStackEntry ->
             val createDietViewModel = hiltViewModel<CreateDietViewModel>(backStackEntry)
+            val dietId = backStackEntry.arguments?.getString("id")
             CreateDietScreen(
                 viewModel = createDietViewModel,
+                dietId = dietId,
                 navigateBack = { navController.popBackStack() },
             )
         }
@@ -74,6 +76,7 @@ fun NavigationGraph(
                 viewModel = dietViewModel,
                 dietId = dietId,
                 navigateBack = { navController.popBackStack() },
+                navigateToEditDiet = { navController.navigate(NavigationRoute.CreateDiet(it).route) },
                 navigateToCreateMeal = { navController.navigate(NavigationRoute.CreateMeal(it).route) },
                 navigateToMeal = { navController.navigate(NavigationRoute.Meal(dietId, it).route) }
             )

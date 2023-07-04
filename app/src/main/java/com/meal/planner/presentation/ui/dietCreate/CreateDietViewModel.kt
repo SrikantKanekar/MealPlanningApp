@@ -20,6 +20,23 @@ class CreateDietViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(CreateDietUiState())
     val uiState: StateFlow<CreateDietUiState> = _uiState
 
+    fun loadDiet(dietId: String?) {
+        viewModelScope.launch {
+            if (dietId != null) {
+                val diet = dietDataSource.getDiet(dietId)
+                if (diet != null) {
+                    _uiState.update {
+                        it.copy(
+                            id = dietId,
+                            name = diet.name,
+                            daysOfWeek = diet.daysOfWeek
+                        )
+                    }
+                }
+            }
+        }
+    }
+
     fun updateName(name: String) {
         _uiState.update { it.copy(name = name) }
     }
@@ -48,6 +65,23 @@ class CreateDietViewModel @Inject constructor(
                     )
                 )
             )
+        }
+    }
+
+    fun updateDiet() {
+        viewModelScope.launch {
+            val diet = dietDataSource.getDiet(_uiState.value.id!!)
+            if (diet != null) {
+                clearDaysOfOtherDiets()
+                dietDataSource.updateDiets(
+                    listOf(
+                        diet.copy(
+                            name = _uiState.value.name,
+                            daysOfWeek = _uiState.value.daysOfWeek
+                        )
+                    )
+                )
+            }
         }
     }
 

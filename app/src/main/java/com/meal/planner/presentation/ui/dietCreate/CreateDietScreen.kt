@@ -45,6 +45,7 @@ import java.time.DayOfWeek
 @Composable
 fun CreateDietScreen(
     viewModel: CreateDietViewModel,
+    dietId: String?,
     navigateBack: () -> Unit
 ) {
 
@@ -54,7 +55,11 @@ fun CreateDietScreen(
     val focusManager = LocalFocusManager.current
 
     LaunchedEffect(Unit) {
-        focusRequester.requestFocus()
+        viewModel.loadDiet(dietId)
+    }
+
+    LaunchedEffect(uiState.isEditMode) {
+        if (!uiState.isEditMode) focusRequester.requestFocus()
     }
 
     Scaffold(
@@ -73,7 +78,14 @@ fun CreateDietScreen(
                         }
                     }
                 },
-                title = { Text(text = "Create Diet") },
+                title = {
+                    Text(
+                        text = if (uiState.isEditMode)
+                            "Edit Diet"
+                        else
+                            "Create Diet"
+                    )
+                },
             )
         },
     ) { paddingValues ->
@@ -137,7 +149,7 @@ fun CreateDietScreen(
 
             Button(
                 onClick = {
-                    viewModel.createDiet()
+                    if (uiState.isEditMode) viewModel.updateDiet() else viewModel.createDiet()
                     navigateBack()
                 },
                 enabled = uiState.name.isNotBlank(),
@@ -145,7 +157,7 @@ fun CreateDietScreen(
             ) {
                 Icon(imageVector = Icons.Filled.Check, contentDescription = "button icon")
                 Spacer(modifier = Modifier.width(10.dp))
-                Text(text = "Create")
+                Text(text = if (uiState.isEditMode) "Update" else "Create")
             }
         }
     }

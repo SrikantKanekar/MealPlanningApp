@@ -9,7 +9,7 @@ sealed class NavigationRoute(
 
     object Home : NavigationRoute("Home")
 
-    object CreateDiet : NavigationRoute("CreateDiet")
+    class CreateDiet(id: String? = null) : NavigationRoute(if (id == null) "CreateDiet/{id}" else "CreateDiet/$id")
 
     class Diet(id: String? = null) : NavigationRoute(if (id == null) "Diet/{id}" else "Diet/$id")
 

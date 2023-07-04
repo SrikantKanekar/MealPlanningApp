@@ -57,6 +57,7 @@ fun DietScreen(
     viewModel: DietViewModel,
     dietId: String?,
     navigateBack: () -> Unit,
+    navigateToEditDiet: (String?) -> Unit,
     navigateToCreateMeal: (String) -> Unit,
     navigateToMeal: (String) -> Unit
 ) {
@@ -100,6 +101,14 @@ fun DietScreen(
                             expanded = menuExpanded,
                             onDismissRequest = { menuExpanded = false }
                         ) {
+                            DropdownMenuItem(
+                                text = { Text("Edit Diet") },
+                                onClick = {
+                                    menuExpanded = false
+                                    navigateToEditDiet(uiState.diet?.id?.toString())
+                                }
+                            )
+
                             DropdownMenuItem(
                                 text = { Text("Delete Diet") },
                                 onClick = {
