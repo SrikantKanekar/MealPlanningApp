@@ -69,6 +69,7 @@ fun MealScreen(
     dietId: String?,
     mealId: String?,
     navigateBack: () -> Unit,
+    navigateToEditMeal: (String?) -> Unit,
     navigateToFood: (String?) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -126,6 +127,14 @@ fun MealScreen(
                             expanded = menuExpanded,
                             onDismissRequest = { menuExpanded = false }
                         ) {
+                            DropdownMenuItem(
+                                text = { Text("Edit Meal") },
+                                onClick = {
+                                    menuExpanded = false
+                                    navigateToEditMeal(uiState.meal?.id)
+                                }
+                            )
+
                             DropdownMenuItem(
                                 text = { Text("Delete Meal") },
                                 onClick = {

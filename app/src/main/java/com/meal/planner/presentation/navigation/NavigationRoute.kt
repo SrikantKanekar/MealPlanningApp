@@ -9,12 +9,21 @@ sealed class NavigationRoute(
 
     object Home : NavigationRoute("Home")
 
-    class CreateDiet(id: String? = null) : NavigationRoute(if (id == null) "CreateDiet/{id}" else "CreateDiet/$id")
+    class CreateDiet(id: String? = null) :
+        NavigationRoute(if (id == null) "CreateDiet/{id}" else "CreateDiet/$id")
 
     class Diet(id: String? = null) : NavigationRoute(if (id == null) "Diet/{id}" else "Diet/$id")
 
-    class CreateMeal(dietId: String? = null) :
-        NavigationRoute(if (dietId == null) "CreateMeal/{dietId}" else "CreateMeal/$dietId")
+    class CreateMeal(
+        dietId: String? = null,
+        mealId: String? = null
+    ) :
+        NavigationRoute(
+            if (dietId == null)
+                "CreateMeal/{dietId}/{mealId}"
+            else
+                "CreateMeal/$dietId/$mealId"
+        )
 
     class Meal(
         dietId: String? = null,

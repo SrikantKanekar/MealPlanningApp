@@ -21,6 +21,26 @@ class CreateMealViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(CreateMealUiState())
     val uiState: StateFlow<CreateMealUiState> = _uiState
 
+    fun loadMeal(dietId: String?, mealId: String?) {
+        viewModelScope.launch {
+            if (dietId != null) {
+                val diet = dietDataSource.getDiet(dietId)
+                if (diet != null) {
+                    val meal = diet.meals.find { it.id == mealId }
+                    if (meal != null) {
+                        _uiState.update {
+                            it.copy(
+                                id = mealId,
+                                name = meal.name,
+                                timing = LocalTime.ofSecondOfDay(meal.timing.toLong())
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     fun updateName(name: String) {
         _uiState.update { it.copy(name = name) }
     }
@@ -47,6 +67,24 @@ class CreateMealViewModel @Inject constructor(
                     dietDataSource.updateDiets(
                         listOf(diet)
                     )
+                }
+            }
+        }
+    }
+
+    fun updateMeal(dietId: String?) {
+        viewModelScope.launch {
+            if (dietId != null) {
+                val diet = dietDataSource.getDiet(dietId)
+                if (diet != null) {
+                    diet.meals
+                        .find { it.id == _uiState.value.id }
+                        ?.apply {
+                            name = _uiState.value.name
+                            timing = _uiState.value.timing.toSecondOfDay()
+                        }
+
+                    dietDataSource.updateDiets(listOf(diet))
                 }
             }
         }

@@ -61,6 +61,7 @@ import java.time.format.FormatStyle
 fun CreateMealScreen(
     viewModel: CreateMealViewModel,
     dietId: String?,
+    mealId: String?,
     navigateBack: () -> Unit
 ) {
 
@@ -75,7 +76,11 @@ fun CreateMealScreen(
     val configuration = LocalConfiguration.current
 
     LaunchedEffect(Unit) {
-        focusRequester.requestFocus()
+        viewModel.loadMeal(dietId, mealId)
+    }
+
+    LaunchedEffect(uiState.isEditMode) {
+        if (!uiState.isEditMode) focusRequester.requestFocus()
     }
 
     Scaffold(
@@ -94,7 +99,14 @@ fun CreateMealScreen(
                         }
                     }
                 },
-                title = { Text(text = "Create Meal") },
+                title = {
+                    Text(
+                        text = if (uiState.isEditMode)
+                            "Edit Meal"
+                        else
+                            "Create Meal"
+                    )
+                },
             )
         },
     ) { paddingValues ->
@@ -163,7 +175,10 @@ fun CreateMealScreen(
 
             Button(
                 onClick = {
-                    viewModel.createMeal(dietId)
+                    if (uiState.isEditMode)
+                        viewModel.updateMeal(dietId)
+                    else
+                        viewModel.createMeal(dietId)
                     navigateBack()
                 },
                 enabled = uiState.name.isNotBlank(),
@@ -171,7 +186,7 @@ fun CreateMealScreen(
             ) {
                 Icon(imageVector = Icons.Filled.Check, contentDescription = "button icon")
                 Spacer(modifier = Modifier.width(10.dp))
-                Text(text = "Create")
+                Text(text = if (uiState.isEditMode) "Update" else "Create")
             }
         }
     }
