@@ -53,7 +53,7 @@ fun HomeScreen(
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
-                title = { Text(text = "Home") },
+                title = { Text(text = "Dashboard") },
                 actions = {
                     IconButton(onClick = navigateToSettings) {
                         Icon(

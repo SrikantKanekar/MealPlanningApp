@@ -20,6 +20,7 @@ import com.meal.planner.model.toProteins
 import com.meal.planner.presentation.components.FilledIndicator
 import com.meal.planner.presentation.components.IndicatorSize
 import com.meal.planner.presentation.ui.meal.MealUiState
+import com.meal.planner.util.capitalise
 import com.meal.planner.util.roundToInt
 
 @Composable
@@ -42,7 +43,7 @@ fun MealDashboardCard(
                 .padding(bottom = 10.dp)
         ) {
             Text(
-                text = "Meal report",
+                text = uiState.meal.name.capitalise() + " meal",
                 style = MaterialTheme.typography.titleLarge
             )
 

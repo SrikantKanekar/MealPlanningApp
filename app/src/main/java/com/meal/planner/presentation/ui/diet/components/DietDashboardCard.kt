@@ -20,6 +20,7 @@ import com.meal.planner.model.toProteins
 import com.meal.planner.presentation.components.Indicator
 import com.meal.planner.presentation.components.IndicatorSize
 import com.meal.planner.presentation.ui.diet.DietUiState
+import com.meal.planner.util.capitalise
 import com.meal.planner.util.kgToPounds
 import com.meal.planner.util.roundToInt
 import com.meal.planner.util.targetCalories
@@ -50,7 +51,7 @@ fun DietDashboardCard(
             modifier = Modifier.padding(20.dp)
         ) {
             Text(
-                text = "Diet report",
+                text = uiState.diet.name.capitalise() + " diet",
                 style = MaterialTheme.typography.titleLarge
             )
 

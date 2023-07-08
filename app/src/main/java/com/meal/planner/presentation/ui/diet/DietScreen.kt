@@ -81,7 +81,7 @@ fun DietScreen(
                         )
                     }
                 },
-                title = { uiState.diet?.let { Text(text = it.name) } },
+                title = { Text(text = "Diet screen") },
                 actions = {
                     IconButton(onClick = { dialogOpened = true }) {
                         Icon(

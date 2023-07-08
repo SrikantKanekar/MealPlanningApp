@@ -97,7 +97,7 @@ fun MealScreen(
                         )
                     }
                 },
-                title = { uiState.meal?.let { Text(text = it.name) } },
+                title = { Text(text = "Meal screen") },
                 actions = {
                     PlainTooltipBox(tooltip = { Text(text = "Time") }) {
                         IconButton(

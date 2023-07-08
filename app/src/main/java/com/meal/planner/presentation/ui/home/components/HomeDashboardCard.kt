@@ -55,7 +55,7 @@ fun HomeDashboardCard(
             modifier = Modifier.padding(20.dp)
         ) {
             Text(
-                text = "Weekly average report",
+                text = "Weekly average",
                 style = MaterialTheme.typography.titleLarge
             )
             Text(
