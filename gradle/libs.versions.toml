@@ -51,6 +51,7 @@ navigation = { group = "androidx.navigation", name = "navigation-compose" }
 androidx-navigation-runtime-ktx = { group = "androidx.navigation", name = "navigation-runtime-ktx", version.ref = "navigation-runtime-ktx" }
 androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hilt-navigation-compose" }
 
+# gson
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 
 # testing
